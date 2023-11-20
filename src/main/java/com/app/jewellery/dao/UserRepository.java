@@ -9,5 +9,8 @@ import com.app.jewellery.entities.UserEntity;
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 	
 	public UserEntity findByMobile(String mobile);
+	
+	
+
  
 }

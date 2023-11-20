@@ -9,4 +9,5 @@ import com.app.jewellery.entities.UserRoleEntity;
 public interface UserRoleRepository extends JpaRepository<UserRoleEntity, Long>{
 	
 	public UserRoleEntity findByUserId(Long serId);
+	
 }

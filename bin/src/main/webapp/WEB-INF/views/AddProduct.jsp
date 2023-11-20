@@ -38,8 +38,7 @@
   
           <div class="mb-3">
               <label for="productImage" class="form-label">Product Image</label>
-              <input type="file" class="form-control" name="image" id="productImage" accept="image/*">
-               
+              <input type="file" class="form-control" id="productImage" accept="image/*">
           </div>
   
           <button type="submit" class="btn btn-primary">Add Product</button>
@@ -53,40 +52,40 @@
     
     <script>
      function addProduct(event) {
-    	 event.preventDefault();
-
-    	    const productName = document.getElementById('productName').value;
-    	    const description = document.getElementById('description').value;
-    	    const price = document.getElementById('price').value;
-    	    const quantity = document.getElementById('quantity').value;
-    	    const productImage = document.getElementById('productImage').files[0];
-
-    	    const formData = new FormData();
-    	    formData.append('image', productImage); // Use 'image' instead of 'file'
-    	    formData.append('productName', productName);
-    	    formData.append('description', description);
-    	    formData.append('price', price);
-    	    formData.append('quantityInStock', quantity);
-
-    	    $.ajax({
-    	        url: '/admin/products/add',
-    	        type: 'POST',
-    	        data: formData,
-    	        contentType: false,
-    	        processData: false,
-    	        success: function(response) {
-    	            console.log('API Response:', response);
-    	            alert(response); 
-    	        },
-    	        error: function(xhr, status, error) {
-    	            console.log('Error:', error);
-    	            if(xhr.status == 404) {
-    	                alert('404 - Endpoint not found');
-    	            } else {
-    	                alert('Error adding product: ' + xhr.responseText);
-    	            }
-    	        }
-    	    });
+        event.preventDefault();
+          // Collect form data
+          const productName = document.getElementById('productName').value;
+          const description = document.getElementById('description').value;
+          const price = document.getElementById('price').value;
+          const quantity = document.getElementById('quantity').value;
+          const productImage = document.getElementById('productImage').files[0]; // For file input
+  
+          // Prepare form data
+          const formData = new FormData();
+          formData.append('file', productImage);
+          formData.append('product', JSON.stringify({
+            productName: productName,
+            description: description,
+            price: price,
+            quantityInStock: quantity
+          }));
+  
+          // Make API call using fetch
+          $.ajax({
+            url: '/admin/add/product',
+            type: 'POST',
+            data: formData,
+            contentType: false, // Important: prevent jQuery from setting the Content-Type
+            processData: false, // Important: prevent jQuery from processing the data
+            success: function (data) {
+                // Handle the API response
+                console.log('API Response:', data);
+            },
+            error: function (error) {
+                // Handle errors
+                console.error('Error:', error);
+            }
+        });
       }
   </script>
   

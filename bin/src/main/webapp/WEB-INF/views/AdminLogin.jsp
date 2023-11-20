@@ -1,10 +1,12 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <title>Verify OTP</title>
+    <title>Admin Login</title>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js" ></script>
   </head>
   <body>
@@ -13,14 +15,17 @@
 
    </div>
    <div class="col-sm-6" >
+
+    <h1 class="text-center text-primary mt-4" >Admin Login</h1>
     
+    <c:if test="${param.error ne null}">
+        <p style="color:red">${param.error}</p>
+    </c:if>
 
-    <h1 class="text-center text-primary mt-4" >Verify OTP Admin</h1>
-
-   <form method="post" onsubmit="verifyOtp(event)">
+   <form method="post" onsubmit="sendOtp(event)">
     <div class="mb-3">
-        <label for="exampleFormControlInput1" class="form-label">Enter OTP </label>
-        <input type="number" id="otp" name="mobile" class="form-control"  placeholder="Enter OTP">
+        <label for="exampleFormControlInput1" class="form-label">Enter Mobile No.</label>
+        <input type="number" id="mobileNumber" name="mobile" class="form-control"  placeholder="Enter Mobile Number">
       </div>
       <button class="btn btn-primary" type="submit">Submit</button>
    </form>
@@ -36,28 +41,27 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
     
     <script>
-     function verifyOtp(event){
+     function sendOtp(event){
         event.preventDefault();
-        var otp=$("#otp").val();
+        var mobile=$("#mobileNumber").val();
 
         $.ajax({
-                url: "/admin/verify/otp",
+                url: "/admin/sendOTP",
                 type: "POST",
                 contentType: "application/json",
-                data: JSON.stringify({otp:otp}),
+                data: JSON.stringify({mobile:mobile}),
                 success: function (response) {
-                	
-                   localStorage.setItem("adminToken", response.token);
-                   window.location.href = "/admin/home";
-                   
+                    // Handle success
+                    window.location.href="/admin/verifyOtp"
+                    
                 },
                 error: function (xhr, status, error) {
-                   alert(xhr.responseJSON.error);
+                    // Handle error
+                    window.location.href="/admin/login?error="+xhr.responseJSON.message;
                 }
             });
 
      }
-     
-      </script>
+    </script>
   </body>
 </html>

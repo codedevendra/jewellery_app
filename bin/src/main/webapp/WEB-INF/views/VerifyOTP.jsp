@@ -46,10 +46,7 @@
                 contentType: "application/json",
                 data: JSON.stringify({otp:otp}),
                 success: function (response) {
-                	
                    localStorage.setItem("adminToken", response.token);
-                   window.location.href = "/admin/home";
-                   
                 },
                 error: function (xhr, status, error) {
                    alert(xhr.responseJSON.error);

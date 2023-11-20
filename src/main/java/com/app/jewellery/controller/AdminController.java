@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,6 +40,7 @@ import com.app.jewellery.dao.UserRoleRepository;
 import com.app.jewellery.entities.ProductEntity;
 import com.app.jewellery.entities.UserEntity;
 import com.app.jewellery.entities.UserRoleEntity;
+import com.app.jewellery.services.AdminService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -54,6 +56,9 @@ public class AdminController {
 	
 	@Autowired
 	ProductRepository productRepository;
+	
+	@Autowired
+	AdminService adminService;
 	
 	 @Value("${upload-dir}")
 	  private String uploadDir;
@@ -75,11 +80,40 @@ public class AdminController {
 		}
 	 
 	 
+	 @PostMapping("/admin/products/add")
+	    public String addGoldProduct(@ModelAttribute ProductEntity productEntity, @RequestParam("image") MultipartFile imageFile) throws IOException {
+	        adminService.addGoldProduct(productEntity, imageFile);
+	        System.out.println("Product saved:");
+
+	        return "Gold product added successfully!";
+	    }
+	 
+	 
+	
+	 
 	@RequestMapping("/admin/login")
 	public ModelAndView getAdminLogin() {
 		ModelAndView mv=new ModelAndView("/AdminLogin");
 		return mv;
 	}
+	
+	
+	
+	  @PostMapping("/admin/add-admin")
+	    public ResponseEntity<UserEntity> addAdmin(@RequestBody UserEntity admin) {
+		  UserEntity createdAdmin = adminService.addAdmin(admin.getName(), admin.getMobile(), admin.getEmail());
+	        return new ResponseEntity<>(createdAdmin, HttpStatus.CREATED);
+	       
+	    }
+
+	    @PostMapping("/admin/add-role")
+	    public ResponseEntity<UserRoleEntity> addRole(@RequestBody UserRoleEntity role) {
+	    	UserRoleEntity createdAdmin = adminService.addRole(role.getRoleName(),role.getUserId());
+	        return new ResponseEntity<>(createdAdmin, HttpStatus.CREATED);
+	       
+	    }
+	 
+	
 	
 	@RequestMapping("/admin/verifyOtp")
 	public ModelAndView verifyOtp() {
