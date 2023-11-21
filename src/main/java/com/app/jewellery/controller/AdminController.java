@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.nio.file.Path;
@@ -22,7 +23,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -81,21 +86,64 @@ public class AdminController {
 	 
 	 
 	 @PostMapping("/admin/products/add")
-	    public String addGoldProduct(@ModelAttribute ProductEntity productEntity, @RequestParam("image") MultipartFile imageFile) throws IOException {
-	        adminService.addGoldProduct(productEntity, imageFile);
+	 @ResponseBody
+	    public String addGoldProduct(@ModelAttribute ProductEntity productEntity) throws IOException {
+	        adminService.addGoldProduct(productEntity);
 	        System.out.println("Product saved:");
 
 	        return "Gold product added successfully!";
 	    }
 	 
 	 
-	
+	 @GetMapping("/admin/gold-products")
+	 @ResponseBody
+	    public List<ProductEntity> getAllGoldProducts() {
+		 System.out.print("URL HIT");
+	        return adminService.getAllGoldProducts();
+	    }
+	 
+	 @GetMapping("/admin/product/{productId}")
+
+	    public ModelAndView getProductById(@PathVariable Long productId) {
+	        ProductEntity product = adminService.getProductById(productId);
+	        
+	        ModelAndView mv=new ModelAndView("EditProduct");
+	       
+	        
+	        if (product != null) {
+	        	 mv.addObject("produuct",product);
+		 	        return mv;
+	        } else {
+	        	  mv=new ModelAndView("Error");
+	        	  mv.addObject("errorMessage","Product not found");
+	        	  return mv;
+	        	  
+	        }
+	    }
+	 
+
+	 
+	 
+	 @DeleteMapping("/admin/delete/{productId}")
+	    public ResponseEntity<String> deleteProductById(@PathVariable Long productId) {
+	        // Call the service method to delete the product by ID
+	        boolean deleted = adminService.deleteProductById(productId);
+
+	        if (deleted) {
+	            return ResponseEntity.ok("Product with ID " + productId + " deleted successfully");
+	        } else {
+	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product with ID " + productId + " not found");
+	        }
+
+	 }
 	 
 	@RequestMapping("/admin/login")
 	public ModelAndView getAdminLogin() {
 		ModelAndView mv=new ModelAndView("/AdminLogin");
 		return mv;
 	}
+	
+	
 	
 	
 	
@@ -268,7 +316,7 @@ public class AdminController {
 	                    .path("/static/images/")
 	                    .path(fileName)
 	                    .toUriString();
-	            savedProduct.setImagePath(imageUrl);
+	            savedProduct.setImage(imageUrl);
 	            productRepository.save(savedProduct);
 
 	            response.put("Message", "Product Added successfully !" );

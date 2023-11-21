@@ -1,94 +1,406 @@
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <title>Add Product</title>
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js" ></script>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<!--     <link rel="stylesheet" href="css/bootstrap.min.css" />
+ -->    
+ <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
+    />
+<!--     <link rel="stylesheet" href="css/dataTables.bootstrap5.min.css" />
+ -->    
+<!--       <link rel="stylesheet" href="css/style.css" />
+ -->      
+      
+      
+      <style type="text/css">
+      
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap");
+body,
+button {
+  font-family: "Inter", sans-serif;
+}
+:root {
+  --offcanvas-width: 270px;
+  --topNavbarHeight: 56px;
+}
+.sidebar-nav {
+  width: var(--offcanvas-width);
+}
+.sidebar-link {
+  display: flex;
+  align-items: center;
+}
+.sidebar-link .right-icon {
+  display: inline-flex;
+}
+.sidebar-link[aria-expanded="true"] .right-icon {
+  transform: rotate(180deg);
+}
+@media (min-width: 992px) {
+  body {
+    overflow: auto !important;
+  }
+  main {
+    margin-left: var(--offcanvas-width);
+  }
+  /* this is to remove the backdrop */
+  .offcanvas-backdrop::before {
+    display: none;
+  }
+  .sidebar-nav {
+    -webkit-transform: none;
+    transform: none;
+    visibility: visible !important;
+    height: calc(100% - var(--topNavbarHeight));
+    top: var(--topNavbarHeight);
+  }
+}
+      
+      
+      </style>
+      
+      
+    <title>Kusum Jewellers Admin Dashboard Template</title>
   </head>
   <body>
-    
-    <div class="container mt-5">
-      <h2 class="mb-4">Add Product</h2>
-      <form id="productForm" onsubmit="addProduct(event)" >
-          <div class="mb-3">
-              <label for="productName" class="form-label">Product Name</label>
-              <input type="text" class="form-control" id="productName" placeholder="Enter product name" required>
-          </div>
-  
-          <div class="mb-3">
-              <label for="description" class="form-label">Description</label>
-              <textarea class="form-control" id="description" placeholder="Enter product description" rows="3"></textarea>
-          </div>
-  
-          <div class="mb-3">
-              <label for="price" class="form-label">Price</label>
-              <div class="input-group">
-                  <span class="input-group-text">Price (RS)</span>
-                  <input type="number" class="form-control" id="price" placeholder="Enter price" step="0.01" required>
+    <!-- top navigation bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <div class="container-fluid">
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#sidebar"
+          aria-controls="offcanvasExample"
+        >
+          <span class="navbar-toggler-icon" data-bs-target="#sidebar"></span>
+        </button>
+        <a
+          class="navbar-brand me-auto ms-lg-0 ms-3 text-uppercase fw-bold"
+          href="#"
+          >Kusum Jewellers</a
+        >
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#topNavBar"
+          aria-controls="topNavBar"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="topNavBar">
+          <form class="d-flex ms-auto my-3 my-lg-0">
+            <div class="input-group">
+              <input
+                class="form-control"
+                type="search"
+                placeholder="Search"
+                aria-label="Search"
+              />
+              <button class="btn btn-primary" type="submit">
+                <i class="bi bi-search"></i>
+              </button>
+            </div>
+          </form>
+          <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle ms-2"
+                href="#"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i class="bi bi-person-fill"></i>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li>
+                  <a class="dropdown-item" href="#">Something else here</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!-- top navigation bar -->
+    <!-- offcanvas -->
+    <div
+      class="offcanvas offcanvas-start sidebar-nav bg-dark"
+      tabindex="-1"
+      id="sidebar"
+    >
+      <div class="offcanvas-body p-0">
+        <nav class="navbar-dark">
+          <ul class="navbar-nav">
+            <li>
+              <div class="text-muted small fw-bold text-uppercase px-3">
+                CORE
               </div>
+            </li>
+            <li>
+              <a href="#" class="nav-link px-3 active">
+                <span class="me-2"><i class="bi bi-speedometer2"></i></span>
+                <span>Dashboard</span>
+              </a>
+            </li>
+            <li class="my-4"><hr class="dropdown-divider bg-light" /></li>
+            <li>
+              <div class="text-muted small fw-bold text-uppercase px-3 mb-3">
+               Services
+              </div>
+            </li>
+           
+            <li>
+              <a href="#" class="nav-link px-3">
+                <span class="me-2"><i class="bi bi-calendar-plus"></i></span>
+                <span>Add Product</span>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="nav-link px-3">
+                <span class="me-2"><i class="bi bi-book-fill"></i></span>
+                <span>Edit Product</span>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="nav-link px-3">
+                <span class="me-2"><i class="bi bi-patch-plus-fill"></i></span>
+                <span>Settings</span>
+              </a>
+            </li>
+            <li class="my-4"><hr class="dropdown-divider bg-light" /></li>
+            <li>
+              <div class="text-muted small fw-bold text-uppercase px-3 mb-3">
+                Addons
+              </div>
+            </li>
+            <li>
+              <a href="#" class="nav-link px-3">
+                <span class="me-2"><i class="bi bi-graph-up"></i></span>
+                <span>Charts</span>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="nav-link px-3">
+                <span class="me-2"><i class="bi bi-table"></i></span>
+                <span>Prodcut List</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+    <!-- offcanvas -->
+    <main class="mt-5 pt-3">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12">
+            <h4>Dashboard</h4>
           </div>
-  
-          <div class="mb-3">
-              <label for="quantity" class="form-label">Quantity</label>
-              <input type="number" class="form-control" id="quantity" placeholder="Enter quantity" required>
+        </div>
+        <div class="row">
+          <div class="col-md-3 mb-3">
+            <div class="card bg-primary text-white h-100">
+              <div class="card-body py-5">Primary Card</div>
+              <div class="card-footer d-flex">
+                View Details
+                <span class="ms-auto">
+                  <i class="bi bi-chevron-right"></i>
+                </span>
+              </div>
+            </div>
           </div>
-  
-          <div class="mb-3">
-              <label for="productImage" class="form-label">Product Image</label>
-              <input type="file" class="form-control" name="image" id="productImage" accept="image/*">
+          <div class="col-md-3 mb-3">
+            <div class="card bg-warning text-dark h-100">
+              <div class="card-body py-5">Warning Card</div>
+              <div class="card-footer d-flex">
+                View Details
+                <span class="ms-auto">
+                  <i class="bi bi-chevron-right"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 mb-3">
+            <div class="card bg-success text-white h-100">
+              <div class="card-body py-5">Success Card</div>
+              <div class="card-footer d-flex">
+                View Details
+                <span class="ms-auto">
+                  <i class="bi bi-chevron-right"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 mb-3">
+            <div class="card bg-danger text-white h-100">
+              <div class="card-body py-5">Danger Card</div>
+              <div class="card-footer d-flex">
+                View Details
+                <span class="ms-auto">
+                  <i class="bi bi-chevron-right"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <div class="card h-100">
+              <div class="card-header">
+                <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
+                Area Chart Example
+              </div>
+              <div class="card-body">
+                <canvas class="chart" width="400" height="200"></canvas>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="card h-100">
+              <div class="card-header">
+                <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
+                Area Chart Example
+              </div>
+              <div class="card-body">
+                <canvas class="chart" width="400" height="200"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <div class="card">
+              <div class="card-header">
+                <span><i class="bi bi-table me-2"></i></span> Data Table
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table
+                    id="example"
+                    class="table table-striped data-table"
+                    style="width: 100%"
+                  >
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th>Product Name</th>
+                        <th>Price</th>
+                        <th>Image</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                       
                
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Tiger Nixon</td>
+                        <td>System Architect</td>
+                        <td>Edinburgh</td>
+                        <td>61</td>
+                        <td>2011/04/25</td>
+                       
+                      </tr>
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <th>Name</th>
+                        <th>Position</th>
+                        <th>Office</th>
+                        <th>Age</th>
+                        <th>Start date</th>
+                        <th>Salary</th>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </div>
+            </div>
           </div>
-  
-          <button type="submit" class="btn btn-primary">Add Product</button>
-      </form>
-  </div>
+        </div>
+      </div>
+    </main>
+<!--     <script src="./js/bootstrap.bundle.min.js"></script>
+ -->    
+     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.2/dist/chart.min.js"></script>
+     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+     
+   <!--  <script src="./js/jquery-3.5.1.js"></script> -->
+   
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
     
-    <script>
-     function addProduct(event) {
-    	 event.preventDefault();
+    
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+    
+    
+    
+    
+     
+ 
+ <script type="text/javascript">
+    const charts = document.querySelectorAll(".chart");
 
-    	    const productName = document.getElementById('productName').value;
-    	    const description = document.getElementById('description').value;
-    	    const price = document.getElementById('price').value;
-    	    const quantity = document.getElementById('quantity').value;
-    	    const productImage = document.getElementById('productImage').files[0];
+    charts.forEach(function (chart) {
+      var ctx = chart.getContext("2d");
+      var myChart = new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+          datasets: [
+            {
+              label: "# of Votes",
+              data: [12, 19, 3, 5, 2, 3],
+              backgroundColor: [
+                "rgba(255, 99, 132, 0.2)",
+                "rgba(54, 162, 235, 0.2)",
+                "rgba(255, 206, 86, 0.2)",
+                "rgba(75, 192, 192, 0.2)",
+                "rgba(153, 102, 255, 0.2)",
+                "rgba(255, 159, 64, 0.2)",
+              ],
+              borderColor: [
+                "rgba(255, 99, 132, 1)",
+                "rgba(54, 162, 235, 1)",
+                "rgba(255, 206, 86, 1)",
+                "rgba(75, 192, 192, 1)",
+                "rgba(153, 102, 255, 1)",
+                "rgba(255, 159, 64, 1)",
+              ],
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+            },
+          },
+        },
+      });
+    });
 
-    	    const formData = new FormData();
-    	    formData.append('image', productImage); // Use 'image' instead of 'file'
-    	    formData.append('productName', productName);
-    	    formData.append('description', description);
-    	    formData.append('price', price);
-    	    formData.append('quantityInStock', quantity);
+    $(document).ready(function () {
+      $(".data-table").each(function (_, table) {
+        $(table).DataTable();
+      });
+    });
 
-    	    $.ajax({
-    	        url: '/admin/products/add',
-    	        type: 'POST',
-    	        data: formData,
-    	        contentType: false,
-    	        processData: false,
-    	        success: function(response) {
-    	            console.log('API Response:', response);
-    	            alert(response); 
-    	        },
-    	        error: function(xhr, status, error) {
-    	            console.log('Error:', error);
-    	            if(xhr.status == 404) {
-    	                alert('404 - Endpoint not found');
-    	            } else {
-    	                alert('Error adding product: ' + xhr.responseText);
-    	            }
-    	        }
-    	    });
-      }
-  </script>
-  
+    
+    </script>
   </body>
 </html>

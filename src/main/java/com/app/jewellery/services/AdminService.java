@@ -1,7 +1,10 @@
 package com.app.jewellery.services;
 
 import java.io.IOException;
+import java.util.Base64;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,10 +54,10 @@ public class AdminService {
 	
 	  
 
-	    public ProductEntity addGoldProduct(ProductEntity goldProduct, MultipartFile imageFile) throws IOException {
-	        goldProduct.setImagePath(imageFile.getOriginalFilename());
+	    public ProductEntity addGoldProduct(ProductEntity goldProduct) throws IOException {
 	        goldProduct.setCreatedAt(LocalDateTime.now());
 	        goldProduct.setUpdatedAt(LocalDateTime.now());
+	       // goldProduct.setImage(imageFile.getBytes().toString());
 
 	        // Save product details to the database
 	        ProductEntity savedProduct = goldProductRepository.save(goldProduct);
@@ -67,5 +70,22 @@ public class AdminService {
 	        
 	        return savedProduct;
 	    }
+
+		public List<ProductEntity> getAllGoldProducts() {
+			 return goldProductRepository.findAll();
+		}
+
+		public ProductEntity getProductById(Long productId) {
+			 return goldProductRepository.findById(productId).orElse(null);
+		}
+
+		 public boolean deleteProductById(Long productId) {
+		      Optional<ProductEntity> optionalProduct = goldProductRepository.findById(productId);
+		        if (optionalProduct.isPresent()) {
+		        	goldProductRepository.deleteById(productId);
+		            return true;
+		        }
+		        return false;
+		    }
 
 }
