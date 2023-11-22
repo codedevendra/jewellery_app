@@ -14,7 +14,6 @@
  -->    
 <!--       <link rel="stylesheet" href="css/style.css" />
  -->      
-          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
       
       
       <style type="text/css">
@@ -25,7 +24,7 @@ button {
   font-family: "Inter", sans-serif;
 }
 :root {
-  --offcanvas-width: 200px;
+  --offcanvas-width: 270px;
   --topNavbarHeight: 56px;
 }
 .sidebar-nav {
@@ -59,13 +58,6 @@ button {
     height: calc(100% - var(--topNavbarHeight));
     top: var(--topNavbarHeight);
   }
-}
-
-
-.offcanvas-start {
- 
-    left: 0;
-    border-right: 1px solid rgba(0,0,0,.2);
 }
       
       
@@ -146,8 +138,6 @@ button {
       class="offcanvas offcanvas-start sidebar-nav bg-dark"
       tabindex="-1"
       id="sidebar"
-      
-      
     >
       <div class="offcanvas-body p-0">
         <nav class="navbar-dark">
@@ -171,7 +161,7 @@ button {
             </li>
            
             <li>
-              <a href="/admin/add-product" class="nav-link px-3">
+              <a href="#" class="nav-link px-3">
                 <span class="me-2"><i class="bi bi-calendar-plus"></i></span>
                 <span>Add Product</span>
               </a>
@@ -295,27 +285,44 @@ button {
                 <span><i class="bi bi-table me-2"></i></span> Data Table
               </div>
               <div class="card-body">
-                <div class="table-responsive1">
-                
-                
+                <div class="table-responsive">
                   <table
-                    id="productTable"
+                    id="example"
                     class="table table-striped data-table"
                     style="width: 100%"
                   >
                     <thead>
-            <tr>
-                <th >#</th>
-                <th >Product Name</th>
-                <th >Price</th>
-                <th >Image</th>
-                <th>Description</th>
-<!--                 <th scope="col" style="margin-left: 15px;">Actions</th>
- -->            </tr>
-        </thead>
-        <tbody></tbody>
-                    
-                    
+                      <tr>
+                        <th scope="col">#</th>
+                        <th>Product Name</th>
+                        <th>Price</th>
+                        <th>Image</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                       
+               
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Tiger Nixon</td>
+                        <td>System Architect</td>
+                        <td>Edinburgh</td>
+                        <td>61</td>
+                        <td>2011/04/25</td>
+                       
+                      </tr>
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <th>Name</th>
+                        <th>Position</th>
+                        <th>Office</th>
+                        <th>Age</th>
+                        <th>Start date</th>
+                        <th>Salary</th>
+                      </tr>
+                    </tfoot>
                   </table>
                 </div>
               </div>
@@ -332,11 +339,12 @@ button {
    <!--  <script src="./js/jquery-3.5.1.js"></script> -->
    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-   <!--  <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script> -->
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
     
-    <!-- 
-    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script> -->
+    
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
     
     
     
@@ -344,109 +352,6 @@ button {
      
  
  <script type="text/javascript">
- 
- 
- $(document).ready(function() {
-     const adminToken = localStorage.getItem("adminToken");
-
-     if (adminToken==null) {
-       window.location.href = "/admin/login";
-     } else {
-   	
-             $.ajax({
-                 url: '/admin/gold-products', // Replace with your API endpoint URL
-                 type: 'GET',
-                 success: function(data) {
-                     bindProductsToTable(data);
-                 },
-                 error: function(error) {
-                     console.error('Error:', error);
-                 }
-             });
-         
-
-         // Function to bind products to table
-         function bindProductsToTable(products) {
-             var tableBody = $('#productTable tbody');
-             tableBody.empty(); // Clear existing table rows
-
-             $.each(products, function(index, product) {
-                 var row = '<tr>' +
-                     '<th scope="row">' + (index + 1) + '</th>' +
-                     '<td>' + product.productName + '</td>' +
-                     '<td>' + product.price + '</td>' +
-                     '<td><img src="' + product.image + '" alt="Product Image" style="max-width: 100px;"></td>' +
-                     '<td>' + product.description + '</td>' +
-                     /* '<td>' +
-                     '<button type="button" style="margin-left: 15px;" class="btn btn-primary edit-button" data-product-id="' + product.productId + '">Edit</button>' +
-
-                     '<button type="button" style="margin-left: 45px;" class="btn btn-danger delete-button" data-product-id="' + product.productId + '">Delete</button>' +
-                     '</td>' + */
-                     '</tr>';
-                 tableBody.append(row);
-             });
-             
-             
-          // Add click event listener to the "Edit" button
-             $('.edit-button').click(function() {
-                 var productId = $(this).data('product-id');
-                 getProductById(productId);
-             });
-         }
-     
-         // Add click event listener to the "Delete" button
-         $('.delete-button').click(function() {
-             var productId = $(this).data('product-id');
-             console.log("productId",productId);
-             deleteProductById(productId);
-         });
-     }
-    
-     $(document).on('click', '.delete-button', function() {
-	        var productId = $(this).data('product-id');
-	        console.log("productId", productId);
-	        deleteProductById(productId);
-	    });
-     
-    
-         function getProductById(productId) {
-       	    window.location.href="/admin/product/"+productId;
-       	}
-         
-         
-         function deleteProductById(productId)
-         {
-       	  var confirmDelete = confirm('Are you sure you want to delete this product?');
-             if (!confirmDelete) {
-                 return; // Cancel deletion if not confirmed
-             }
-             
-             // Make DELETE request to the API endpoint
-             $.ajax({
-                 url: '/admin/delete/' + productId,
-                 type: 'DELETE',
-                 success: function(response) {
-                     console.log('Product deleted:', response);
-                     alert("Product deleted: SuccessFully!!");
-                     // Optionally, update the UI or perform any additional actions
-                     location.reload();
-                 },
-                 error: function(error) {
-                     console.error('Error deleting product:', error);
-                     // Handle error or display a message to the user
-                 }
-             });
-       
-         }
-         
-   });
- 
- 
- 
- 
- 
- 
- 
     const charts = document.querySelectorAll(".chart");
 
     charts.forEach(function (chart) {

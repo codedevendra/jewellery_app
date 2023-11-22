@@ -12,6 +12,7 @@
 	<artifactId>jewellery</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>jewellery</name>
+	<packaging>war</packaging>
 	<description>jewellery app project</description>
 	<properties>
 		<java.version>11</java.version>
@@ -109,6 +110,32 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			<plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-resources-plugin</artifactId>
+            <version>3.2.0</version>
+            <executions>
+                <execution>
+                    <id>copy-resources</id>
+                    <phase>validate</phase>
+                    <goals>
+                        <goal>copy-resources</goal>
+                    </goals>
+                    <configuration>
+                        <outputDirectory>${project.build.directory}/classes/META-INF/resources</outputDirectory>
+                        <resources>
+                            <resource>
+                               <directory>${project.basedir}/src/main/webapp</directory>
+                                <filtering>true</filtering>
+                                <includes>
+                                    <include>**/*</include>
+                                </includes>
+                            </resource>
+                        </resources>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
 		</plugins>
 	</build>
 	<repositories>
