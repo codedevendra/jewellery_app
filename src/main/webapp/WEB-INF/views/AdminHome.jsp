@@ -14,6 +14,7 @@
  -->    
 <!--       <link rel="stylesheet" href="css/style.css" />
  -->      
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
       
       
       <style type="text/css">
@@ -24,7 +25,7 @@ button {
   font-family: "Inter", sans-serif;
 }
 :root {
-  --offcanvas-width: 270px;
+  --offcanvas-width: 200px;
   --topNavbarHeight: 56px;
 }
 .sidebar-nav {
@@ -58,6 +59,13 @@ button {
     height: calc(100% - var(--topNavbarHeight));
     top: var(--topNavbarHeight);
   }
+}
+
+
+.offcanvas-start {
+ 
+    left: 0;
+    border-right: 1px solid rgba(0,0,0,.2);
 }
       
       
@@ -287,7 +295,9 @@ button {
                 <span><i class="bi bi-table me-2"></i></span> Data Table
               </div>
               <div class="card-body">
-                <div class="table-responsive">
+                <div class="table-responsive1">
+                
+                
                   <table
                     id="productTable"
                     class="table table-striped data-table"
@@ -305,17 +315,7 @@ button {
         </thead>
         <tbody></tbody>
                     
-                    <tfoot>
-                      <tr>
-                         <th>#</th>
-                        <th>Product Name</th>
-                        <th>Price</th>
-                        <th>Image</th>
-                        <th>Description</th>
-                        
-                        
-                      </tr>
-                    </tfoot>
+                    
                   </table>
                 </div>
               </div>
@@ -332,12 +332,11 @@ button {
    <!--  <script src="./js/jquery-3.5.1.js"></script> -->
    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+   <!--  <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script> -->
 
     
-    
-    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+    <!-- 
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script> -->
     
     
     
