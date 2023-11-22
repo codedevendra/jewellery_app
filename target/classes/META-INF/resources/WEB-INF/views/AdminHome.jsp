@@ -171,7 +171,7 @@ button {
             </li>
            
             <li>
-              <a href="#" class="nav-link px-3">
+              <a href="/admin/add-product" class="nav-link px-3">
                 <span class="me-2"><i class="bi bi-calendar-plus"></i></span>
                 <span>Add Product</span>
               </a>
