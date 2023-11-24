@@ -1,13 +1,10 @@
 FROM openjdk:11-jre-slim
+VOLUME /tmp
+COPY target/*.war jewellery-0.0.1-SNAPSHOT.war
+ENTRYPOINT ["java","-jar","/jewellery-0.0.1-SNAPSHOT.war"]
 
-# Set the working directory inside the container
-WORKDIR /jewellery_app
 
-# Copy the Maven project file (pom.xml) to the container
-COPY pom.xml .
 
-# Copy the source code to the container
-COPY src ./src
 
 # Build the application
 #RUN ./mvnw clean install -DskipTests
