@@ -16,4 +16,4 @@ COPY src ./src
 EXPOSE 8080
 
 # Specify the command to run the application
-CMD ["java", "-jar", "target/jewellery-0.0.1-SNAPSHOT.war"]
+CMD ["java", "-jar", "./target/jewellery-0.0.1-SNAPSHOT.war"]
