@@ -10,7 +10,7 @@ COPY pom.xml .
 COPY src ./src
 
 # Build the application
-RUN ./mvnw clean install -DskipTests
+RUN mvn clean install -DskipTests
 
 # Expose the port that your Spring Boot application will run on
 EXPOSE 8080
