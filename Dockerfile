@@ -1,7 +1,7 @@
 FROM openjdk:11-jre-slim
 
 # Set the working directory inside the container
-WORKDIR /home/ubuntu/jewellery_app/
+WORKDIR /jewellery_app
 
 # Copy the Maven project file (pom.xml) to the container
 COPY pom.xml .
