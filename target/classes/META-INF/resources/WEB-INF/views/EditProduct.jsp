@@ -207,7 +207,7 @@ button {
               </a>
             </li>
               <li>
-              <a href="#" class="nav-link px-3">
+              <a onclick="logout();" class="nav-link px-3">
                 <span class="me-2"><i class="bi bi-box-arrow-right"></i></span>
                 
                 
@@ -426,11 +426,15 @@ button {
     });
 
     $(document).ready(function () {
-      $(".data-table").each(function (_, table) {
-        $(table).DataTable();
-      });
-    });
+      const adminToken = localStorage.getItem("adminToken");
+      if(adminToken==null){
+       window.location.href = "/admin/login";
+    }});
 
+ function logout(){
+    localStorage.removeItem("adminToken");
+    window.location.href = "/admin/login";
+    }
     
     </script>
   </body>

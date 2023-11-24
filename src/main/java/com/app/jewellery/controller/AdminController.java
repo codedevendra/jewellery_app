@@ -11,8 +11,7 @@ import java.util.Random;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -52,6 +51,9 @@ import org.springframework.beans.factory.annotation.Value;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 
 @Controller
 public class AdminController {
@@ -73,7 +75,7 @@ public class AdminController {
 	 private static final String SECRET_KEY = "kjdnfgjngngngkjgkjfgnkjfbnkjnkjfgnkbjgfbkjugfjhdhfjdfgjdjkdfjhjhfdjhjhjhgfhjghjdf";
 	
 	 @RequestMapping("/admin/home")
-		public ModelAndView getAdminHome(HttpSession session,HttpServletRequest request) {
+		public ModelAndView getAdminHome(HttpSession session, HttpServletRequest request) {
 			ModelAndView mv=new ModelAndView("/AdminHome");
 			return mv;
 		}
