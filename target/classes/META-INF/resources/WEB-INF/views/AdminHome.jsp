@@ -13,8 +13,12 @@
 <!--     <link rel="stylesheet" href="css/dataTables.bootstrap5.min.css" />
  -->    
 <!--       <link rel="stylesheet" href="css/style.css" />
+
  -->      
-          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+ <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
       
       
       <style type="text/css">
@@ -117,8 +121,9 @@ button {
               </button>
             </div>
           </form>
+          
           <ul class="navbar-nav">
-            <li class="nav-item dropdown">
+           <!--  <li class="nav-item dropdown">
               <a
                 class="nav-link dropdown-toggle ms-2"
                 href="#"
@@ -135,8 +140,27 @@ button {
                   <a class="dropdown-item" href="#">Something else here</a>
                 </li>
               </ul>
-            </li>
-          </ul>
+            </li> -->
+					<div class="dropdown">
+						
+							
+							 <a
+                class="nav-link dropdown-toggle ms-2"
+                href="#"
+                id="dropdownMenuButton" 
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <i class="bi bi-person-fill"></i>
+              </a>
+						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+							<a class="dropdown-item" href="#">Action</a> <a
+								class="dropdown-item" href="#">Another action</a> <a
+								class="dropdown-item" href="#">Something else here</a>
+						</div>
+					</div>
+				</ul>
         </div>
       </div>
     </nav>
@@ -158,7 +182,7 @@ button {
               </div>
             </li>
             <li>
-              <a href="#" class="nav-link px-3 active">
+              <a  href="/admin/home"class="nav-link px-3 active">
                 <span class="me-2"><i class="bi bi-speedometer2"></i></span>
                 <span>Dashboard</span>
               </a>
@@ -176,12 +200,12 @@ button {
                 <span>Add Product</span>
               </a>
             </li>
-            <li>
+         <!--    <li>
               <a href="#" class="nav-link px-3">
                 <span class="me-2"><i class="bi bi-book-fill"></i></span>
                 <span>Edit Product</span>
               </a>
-            </li>
+            </li> -->
             <li>
               <a href="#" class="nav-link px-3">
                 <span class="me-2"><i class="bi bi-patch-plus-fill"></i></span>
@@ -195,17 +219,27 @@ button {
               </div>
             </li>
             <li>
-              <a href="#" class="nav-link px-3">
+              <a href="/admin/home" class="nav-link px-3">
                 <span class="me-2"><i class="bi bi-graph-up"></i></span>
                 <span>Charts</span>
               </a>
             </li>
             <li>
-              <a href="#" class="nav-link px-3">
+              <a href="#productTable" class="nav-link px-3">
                 <span class="me-2"><i class="bi bi-table"></i></span>
                 <span>Prodcut List</span>
               </a>
             </li>
+            
+            <li>
+              <a href="/logout" class="nav-link px-3">
+                <span class="me-2"><i class="bi bi-box-arrow-right"></i></span>
+                
+                
+                <span>Logout</span>
+              </a>
+            </li>
+            
           </ul>
         </nav>
       </div>
@@ -221,9 +255,9 @@ button {
         <div class="row">
           <div class="col-md-3 mb-3">
             <div class="card bg-primary text-white h-100">
-              <div class="card-body py-5">Primary Card</div>
+              <div class="card-body py-5">100</div>
               <div class="card-footer d-flex">
-                View Details
+                No of Orders
                 <span class="ms-auto">
                   <i class="bi bi-chevron-right"></i>
                 </span>
@@ -232,9 +266,9 @@ button {
           </div>
           <div class="col-md-3 mb-3">
             <div class="card bg-warning text-dark h-100">
-              <div class="card-body py-5">Warning Card</div>
+              <div class="card-body py-5">500</div>
               <div class="card-footer d-flex">
-                View Details
+                No of. Users
                 <span class="ms-auto">
                   <i class="bi bi-chevron-right"></i>
                 </span>
@@ -243,9 +277,9 @@ button {
           </div>
           <div class="col-md-3 mb-3">
             <div class="card bg-success text-white h-100">
-              <div class="card-body py-5">Success Card</div>
+              <div class="card-body py-5">67</div>
               <div class="card-footer d-flex">
-                View Details
+                Order Pending
                 <span class="ms-auto">
                   <i class="bi bi-chevron-right"></i>
                 </span>
@@ -254,9 +288,9 @@ button {
           </div>
           <div class="col-md-3 mb-3">
             <div class="card bg-danger text-white h-100">
-              <div class="card-body py-5">Danger Card</div>
+              <div class="card-body py-5">45</div>
               <div class="card-footer d-flex">
-                View Details
+                Today Orders
                 <span class="ms-auto">
                   <i class="bi bi-chevron-right"></i>
                 </span>
@@ -310,8 +344,8 @@ button {
                 <th >Price</th>
                 <th >Image</th>
                 <th>Description</th>
-<!--                 <th scope="col" style="margin-left: 15px;">Actions</th>
- -->            </tr>
+                               <th scope="col" style="margin-left: 30px;">Actions</th>
+             </tr>
         </thead>
         <tbody></tbody>
                     
@@ -331,8 +365,11 @@ button {
      
    <!--  <script src="./js/jquery-3.5.1.js"></script> -->
    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
    <!--  <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script> -->
+   
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     
     <!-- 
@@ -377,11 +414,13 @@ button {
                      '<td>' + product.price + '</td>' +
                      '<td><img src="' + product.image + '" alt="Product Image" style="max-width: 100px;"></td>' +
                      '<td>' + product.description + '</td>' +
-                     /* '<td>' +
-                     '<button type="button" style="margin-left: 15px;" class="btn btn-primary edit-button" data-product-id="' + product.productId + '">Edit</button>' +
+                      '<td>' +
+                     //'<button type="button" style="margin-left: 15px;" class="btn btn-primary edit-button" data-product-id="' + product.productId + '">Edit</button>' +
+                        '<a class="edit edit-button" style="margin-left: 15px;" title="Edit" data-toggle="tooltip" data-product-id="' + product.productId + '"><i class="material-icons">&#xE254;</i></a>' +
+                         '<a class="delete delete-button" style="margin-left: 45px;" title="Delete" data-toggle="tooltip" data-product-id="' + product.productId + '"><i class="material-icons">&#xE872;</i></a>'
 
-                     '<button type="button" style="margin-left: 45px;" class="btn btn-danger delete-button" data-product-id="' + product.productId + '">Delete</button>' +
-                     '</td>' + */
+                     //'<button type="button" style="margin-left: 45px;" class="btn btn-danger delete-button" data-product-id="' + product.productId + '">Delete</button>' +
+                     '</td>' + 
                      '</tr>';
                  tableBody.append(row);
              });

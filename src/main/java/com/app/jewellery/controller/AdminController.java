@@ -91,7 +91,17 @@ public class AdminController {
 	        adminService.addGoldProduct(productEntity);
 	        System.out.println("Product saved:");
 
-	        return "Gold product added successfully!";
+	        return "Product added successfully!";
+	    }
+	 
+	 
+	 @PostMapping("/admin/products/edit")
+	 @ResponseBody
+	    public String editProduct(@ModelAttribute ProductEntity productEntity) throws IOException {
+	        adminService.addGoldProduct(productEntity);
+	        System.out.println("Product edit");
+
+	        return "Product Edit successfully!";
 	    }
 	 
 	 
