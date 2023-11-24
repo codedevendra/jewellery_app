@@ -11,7 +11,8 @@ import java.util.Random;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 
-
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -51,9 +52,6 @@ import org.springframework.beans.factory.annotation.Value;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 
 @Controller
 public class AdminController {
@@ -74,8 +72,15 @@ public class AdminController {
 	UserRoleRepository userRoleRepository;
 	 private static final String SECRET_KEY = "kjdnfgjngngngkjgkjfgnkjfbnkjnkjfgnkbjgfbkjugfjhdhfjdfgjdjkdfjhjhfdjhjhjhgfhjghjdf";
 	
+	 
+	 @RequestMapping("/")
+		public ModelAndView getAdminHomeDefault(HttpSession session,HttpServletRequest request) {
+			ModelAndView mv=new ModelAndView("/AdminHome");
+			return mv;
+		}
+	 
 	 @RequestMapping("/admin/home")
-		public ModelAndView getAdminHome(HttpSession session, HttpServletRequest request) {
+		public ModelAndView getAdminHome(HttpSession session,HttpServletRequest request) {
 			ModelAndView mv=new ModelAndView("/AdminHome");
 			return mv;
 		}
@@ -181,7 +186,7 @@ public class AdminController {
 		return mv;
 	}
 	
-	@RequestMapping("/admin/verify/otp")
+	//@RequestMapping("/admin/verify/otp")
 	public ResponseEntity<Map<String,Object>>  verifyAdminOtp(@RequestBody Map<String,Object> data,HttpSession session) {
 		if(session.getAttribute("otp")!=null&&session.getAttribute("otp").equals(data.get("otp"))) {
 			String token=generateToken(String.valueOf(session.getAttribute("user")));
@@ -196,7 +201,7 @@ public class AdminController {
 	
 	}
 	
-	@PostMapping("/admin/sendOTP")
+	//@PostMapping("/admin/sendOTP")
 	@ResponseBody
 	public ResponseEntity<Map<String,Object>> sendOTP(@RequestBody Map<String,Object>  data,HttpSession session){
 		Map<String, Object>response=new HashMap<String, Object>();
@@ -339,4 +344,51 @@ public class AdminController {
 	            return ResponseEntity.status(500).body(response);
 	        }
 	    }
+	  
+	  
+	
+	  
+		
+		
+		
+		@RequestMapping("/admin/verify/otp")
+		public ResponseEntity<Map<String,Object>>  verifyAdminOtpDummy(@RequestBody Map<String,Object> data,HttpSession session) {
+			if(data.get("otp").equals("1234")) {
+				String token=generateToken(String.valueOf(session.getAttribute("user")));
+				Map<String,Object> response=new HashMap<String, Object>();
+				response.put("token", token);
+				return ResponseEntity.ok(response);
+			}else {
+				Map<String,Object> response=new HashMap<String, Object>();
+				response.put("error","Invalid otp!");
+				return ResponseEntity.status(401).body(response);
+			}
+		
+		}
+		
+	    @PostMapping("/admin/sendOTP")
+		@ResponseBody
+		public ResponseEntity<Map<String, Object>> sendToken(@RequestBody Map<String, Object> data, HttpSession session) {
+		    Map<String, Object> response = new HashMap<>();
+		    UserEntity user = userRepository.findByMobile(String.valueOf(data.get("mobile")));
+
+		    if (user != null) {
+		        UserRoleEntity userRole = userRoleRepository.findByUserId(user.getUserId());
+		        if (userRole != null && userRole.getRoleName().equals("ADMIN")) {
+		            // Generate and set token
+		            String token ="e5GOnctWzR9ZUHphmgslv8AK2IYMduN0BFbXS3Ly4kT1QEfraPumRb2BsFTzYWOwZ1IUJqdKixMp8H3G";
+                    
+		            // Set the token in the response
+		            response.put("authorization", token);
+		            return ResponseEntity.ok(response);
+		        } else {
+		            response.put("message", "User Not Found !");
+		            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+		        }
+		    } else {
+		        response.put("message", "User Not Found !");
+		        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+		    }
+		}
+	  
 }
