@@ -46,6 +46,7 @@ import com.app.jewellery.entities.ProductEntity;
 import com.app.jewellery.entities.UserEntity;
 import com.app.jewellery.entities.UserRoleEntity;
 import com.app.jewellery.services.AdminService;
+import com.app.jewellery.util.Authentication;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -70,7 +71,9 @@ public class AdminController {
 	
 	@Autowired
 	UserRoleRepository userRoleRepository;
-	 private static final String SECRET_KEY = "kjdnfgjngngngkjgkjfgnkjfbnkjnkjfgnkbjgfbkjugfjhdhfjdfgjdjkdfjhjhfdjhjhjhgfhjghjdf";
+	
+	@Autowired
+	Authentication authentication;
 	
 	 
 	 @RequestMapping("/")
@@ -85,74 +88,13 @@ public class AdminController {
 			return mv;
 		}
 	 
-	 @RequestMapping("/admin/add-product")
-		public ModelAndView getAddProduct(HttpSession session,HttpServletRequest request) {
-			ModelAndView mv=new ModelAndView("/AddProduct");
-			return mv;
-		}
+	
 	 
-	 
-	 @PostMapping("/admin/products/add")
-	 @ResponseBody
-	    public String addGoldProduct(@ModelAttribute ProductEntity productEntity) throws IOException {
-	        adminService.addGoldProduct(productEntity);
-	        System.out.println("Product saved:");
-
-	        return "Product added successfully!";
-	    }
-	 
-	 
-	 @PostMapping("/admin/products/edit")
-	 @ResponseBody
-	    public String editProduct(@ModelAttribute ProductEntity productEntity) throws IOException {
-	        adminService.addGoldProduct(productEntity);
-	        System.out.println("Product edit");
-
-	        return "Product Edit successfully!";
-	    }
-	 
-	 
-	 @GetMapping("/admin/gold-products")
-	 @ResponseBody
-	    public List<ProductEntity> getAllGoldProducts() {
-		 System.out.print("URL HIT");
-	        return adminService.getAllGoldProducts();
-	    }
-	 
-	 @GetMapping("/admin/product/{productId}")
-
-	    public ModelAndView getProductById(@PathVariable Long productId) {
-	        ProductEntity product = adminService.getProductById(productId);
-	        
-	        ModelAndView mv=new ModelAndView("EditProduct");
-	       
-	        
-	        if (product != null) {
-	        	 mv.addObject("produuct",product);
-		 	        return mv;
-	        } else {
-	        	  mv=new ModelAndView("Error");
-	        	  mv.addObject("errorMessage","Product not found");
-	        	  return mv;
-	        	  
-	        }
-	    }
+	
 	 
 
 	 
-	 
-	 @DeleteMapping("/admin/delete/{productId}")
-	    public ResponseEntity<String> deleteProductById(@PathVariable Long productId) {
-	        // Call the service method to delete the product by ID
-	        boolean deleted = adminService.deleteProductById(productId);
-
-	        if (deleted) {
-	            return ResponseEntity.ok("Product with ID " + productId + " deleted successfully");
-	        } else {
-	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product with ID " + productId + " not found");
-	        }
-
-	 }
+	
 	 
 	@RequestMapping("/admin/login")
 	public ModelAndView getAdminLogin() {
@@ -189,7 +131,7 @@ public class AdminController {
 	//@RequestMapping("/admin/verify/otp")
 	public ResponseEntity<Map<String,Object>>  verifyAdminOtp(@RequestBody Map<String,Object> data,HttpSession session) {
 		if(session.getAttribute("otp")!=null&&session.getAttribute("otp").equals(data.get("otp"))) {
-			String token=generateToken(String.valueOf(session.getAttribute("user")));
+			String token=authentication.generateToken(String.valueOf(session.getAttribute("user")));
 			Map<String,Object> response=new HashMap<String, Object>();
 			response.put("token", token);
 			return ResponseEntity.ok(response);
@@ -219,7 +161,7 @@ public class AdminController {
 				Map<String, Object> requestBody = new HashMap<>();
 				requestBody.put("numbers",user.getMobile());
 				requestBody.put("route", "q");
-				String otp=generateOTP();
+				String otp=authentication.generateOTP();
 				
 				requestBody.put("message", "Your OTP for Jewellery APP is : "+otp);
 				try {
@@ -273,41 +215,7 @@ public class AdminController {
 		}
 	}
 	
-	public  String generateOTP() {
-        // Specify the length of the OTP
-        int otpLength = 4;
-
-        // Define the range of characters allowed in the OTP
-        String allowedCharacters = "0123456789";
-
-        // Create a StringBuilder to store the OTP
-        StringBuilder otp = new StringBuilder(otpLength);
-
-        // Create an instance of Random
-        Random random = new Random();
-
-        // Generate the OTP by randomly selecting characters from the allowed set
-        for (int i = 0; i < otpLength; i++) {
-            int index = random.nextInt(allowedCharacters.length());
-            char digit = allowedCharacters.charAt(index);
-            otp.append(digit);
-        }
-
-        return otp.toString();
-    }
 	
-	  public String generateToken(String username) {
-		  long EXPIRATION_TIME = 864_000_000;
-	        Date now = new Date();
-	        Date expirationDate = new Date(now.getTime() + EXPIRATION_TIME);
-
-	        return Jwts.builder()
-	                .setSubject(username)
-	                .setIssuedAt(now)
-	                .setExpiration(expirationDate)
-	                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
-	                .compact();
-	    }
 	  
 	  
 	  @PostMapping(value="/admin/add/product",consumes = "multipart/form-data")
@@ -354,7 +262,7 @@ public class AdminController {
 		@RequestMapping("/admin/verify/otp")
 		public ResponseEntity<Map<String,Object>>  verifyAdminOtpDummy(@RequestBody Map<String,Object> data,HttpSession session) {
 			if(data.get("otp").equals("1234")) {
-				String token=generateToken(String.valueOf(session.getAttribute("user")));
+				String token=authentication.generateToken(String.valueOf(session.getAttribute("user")));
 				Map<String,Object> response=new HashMap<String, Object>();
 				response.put("token", token);
 				return ResponseEntity.ok(response);

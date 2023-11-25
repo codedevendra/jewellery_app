@@ -233,8 +233,10 @@ button {
                 <span>EDIT PRODUCT</span> 
               </div>
              
-      <form id="productForm" onsubmit="addProduct(event)" >
+      <form id="productForm" onsubmit="editProduct(event)" >
           <div class="mb-3">
+               <input type="hidden" id="productId" name="productId" value=${produuct.productId}>
+               
               <label for="productName" class="form-label">Product Name</label>
               <input type="text" class="form-control" id="productName" value=${produuct.productName} placeholder="Enter product name" required>
           </div>
@@ -258,9 +260,9 @@ button {
           </div>
   
           <div class="mb-3">
-          <img src=${produuct.image} width=200  >
+          <img id="productPreview" src=${produuct.image} width=200  >
               <label for="productImage" class="form-label">Product Image</label>
-              <input type="file" class="form-control" name="image" id="productImage" accept="image/*">
+              <input type="file" class="form-control" name="image" id="productImage" accept="image/*" onchange="displayImage(this)">
                
           </div>
   
@@ -281,8 +283,7 @@ button {
 <!--     <script src="./js/bootstrap.bundle.min.js"></script>
  -->    
      <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.2/dist/chart.min.js"></script>
-     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
-     
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>     
    <!--  <script src="./js/jquery-3.5.1.js"></script> -->
    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -300,6 +301,20 @@ button {
  <script type="text/javascript">
  
  
+ function displayImage(input) {
+	  const file = input.files[0];
+	  if (file) {
+	    const reader = new FileReader();
+
+	    reader.onload = function(e) {
+	      const productPreview = document.getElementById('productPreview');
+	      productPreview.src = e.target.result;
+	    };
+
+	    reader.readAsDataURL(file);
+	  }
+	}
+ 
  
  // Function to get URL parameters by name
  function getUrlParameter(name) {
@@ -307,33 +322,50 @@ button {
      var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
      var results = regex.exec(location.search);
      return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+     
+     
+    
+
  }
  
  
-  function addProduct(event) {
+  function editProduct(event) {
  	 event.preventDefault();
  	 
  	 
+ 	const input = document.getElementById('productImage');
+ 	 
+ 	 if (input.files.length > 0) {
+ 		 const file = document.getElementById('productImage').files[0];
+  	    var productImage;
+
+          var reader = new FileReader();
+
+          reader.onload = function(event) {
+              productImage = event.target.result; // Data URI with base64 encoding
+              console.log("productImage  ",productImage);
+
+              callAPI(productImage);
+
+              // Append the image element to a container in the HTML
+              
+          };
+
+          reader.readAsDataURL(file);
+
+          console.log("productImage 123 ",productImage);
+ 	   
+ 	  } else {
+ 		  
+ 		 var imageSrc = document.getElementById('productPreview').src;
+ 		  
+ 		  console.log("image231",imageSrc);
+ 		 
+ 		 callAPI(imageSrc);
+ 	  }
 
  	    
- 	    const file = document.getElementById('productImage').files[0];
- 	    var productImage;
-
-         var reader = new FileReader();
-
-         reader.onload = function(event) {
-             productImage = event.target.result; // Data URI with base64 encoding
-             console.log("productImage  ",productImage);
-
-             callAPI(productImage);
-
-             // Append the image element to a container in the HTML
-             
-         };
-
-         reader.readAsDataURL(file);
-
-         console.log("productImage 123 ",productImage);
+ 	   
          
 
  	   
@@ -341,19 +373,22 @@ button {
   
   function callAPI(image)
   {
+	  console.log("image",image);
+	  const productId=document.getElementById('productId').value;
  	 const productName = document.getElementById('productName').value;
 	    const description = document.getElementById('description').value;
 	    const price = document.getElementById('price').value;
 	    const quantity = document.getElementById('quantity').value;
  	 const formData = new FormData();
 	    formData.append('image', image); // Use 'image' instead of 'file'
+	    formData.append('productId', productId);
 	    formData.append('productName', productName);
 	    formData.append('description', description);
 	    formData.append('price', price);
 	    formData.append('quantityInStock', quantity);
 
 	    $.ajax({
-	        url: '/admin/products/add',
+	        url: '/admin/products/edit',
 	        type: 'POST',
 	        data: formData,
 	        contentType: false,
