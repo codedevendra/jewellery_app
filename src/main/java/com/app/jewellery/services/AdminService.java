@@ -10,9 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.app.jewellery.dao.CategoryRepository;
 import com.app.jewellery.dao.ProductRepository;
 import com.app.jewellery.dao.UserRepository;
 import com.app.jewellery.dao.UserRoleRepository;
+import com.app.jewellery.entities.CategoryEntity;
 import com.app.jewellery.entities.ProductEntity;
 import com.app.jewellery.entities.UserEntity;
 import com.app.jewellery.entities.UserRoleEntity;
@@ -23,12 +25,14 @@ public class AdminService {
 	 private final UserRepository userRepository;
 	 private final UserRoleRepository userRoleRepository;
 	 private final ProductRepository goldProductRepository;
+	 private final CategoryRepository categoryRepository;
 
 	    @Autowired
-	    public AdminService(UserRepository userRepository,UserRoleRepository userRepository2,ProductRepository goldProductRepository) {
+	    public AdminService(UserRepository userRepository,UserRoleRepository userRepository2,ProductRepository goldProductRepository,CategoryRepository categoryRepository1) {
 	        this.userRepository = userRepository;
 			this.userRoleRepository = userRepository2;
 			this.goldProductRepository=goldProductRepository;
+			this.categoryRepository=categoryRepository1;
 	    }
 
 	public UserEntity addAdmin(String name, String mobile, String email) {
@@ -57,10 +61,10 @@ public class AdminService {
 	    public ProductEntity addGoldProduct(ProductEntity goldProduct) throws IOException {
 	        goldProduct.setCreatedAt(LocalDateTime.now());
 	        goldProduct.setUpdatedAt(LocalDateTime.now());
+	      
 	       // goldProduct.setImage(imageFile.getBytes().toString());
 
 	        // Save product details to the database
-	        ProductEntity savedProduct = goldProductRepository.save(goldProduct);
 
 	        // Handle image file upload and storage logic here
 	        // Example: File storage or database BLOB storage
@@ -68,8 +72,21 @@ public class AdminService {
 	        // For illustration, just printing the details
 	        //System.out.println("Product saved: " + savedProduct.getProductName());
 	        
-	        return savedProduct;
+	        ProductEntity productEntity=goldProductRepository.save(goldProduct);
+	        
+	    
+			/*
+			 * long CategoryEntity category =
+			 * categoryRepository.findById(categoryId).orElse(null); if (category != null) {
+			 * goldProduct.setCategory(category); return
+			 * goldProductRepository.save(goldProduct); }
+			 */
+	        return productEntity; // Handle category not found scenario
+	    
+	    
 	    }
+	    
+	    
 
 		public List<ProductEntity> getAllGoldProducts() {
 			 return goldProductRepository.findAll();

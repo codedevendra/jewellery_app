@@ -258,6 +258,16 @@ button {
               <label for="quantity" class="form-label">Quantity</label>
               <input type="number" class="form-control" id="quantity"  value=${produuct.quantityInStock} placeholder="Enter quantity" required>
           </div>
+            <div class="mb-3">
+               <label for="categorySelect" class="form-label " >Select Category</label>
+               <input type="hidden" id="catId" name="productId" value=${produuct.category}>
+            <select class="form-control bg-light custom-dropdown"  id="categorySelect"   >
+               <option value="" selected disabled>Select a category</option>
+           </select>
+           
+            
+         </div>
+         
   
           <div class="mb-3">
           <img id="productPreview" src=${produuct.image} width=200  >
@@ -374,6 +384,7 @@ button {
   function callAPI(image)
   {
 	  console.log("image",image);
+	  const categoryId = document.getElementById('categorySelect').value;
 	  const productId=document.getElementById('productId').value;
  	 const productName = document.getElementById('productName').value;
 	    const description = document.getElementById('description').value;
@@ -386,6 +397,7 @@ button {
 	    formData.append('description', description);
 	    formData.append('price', price);
 	    formData.append('quantityInStock', quantity);
+	    formData.append('category', categoryId);
 
 	    $.ajax({
 	        url: '/admin/products/edit',
@@ -461,6 +473,37 @@ button {
     });
 
     $(document).ready(function () {
+  	  const categoryId=document.getElementById('catId').value;
+    	// Fetch categories and populate dropdown
+    	fetch('/all/category')
+    	    .then(response => response.json())
+    	    .then(categories => {
+    	        // 'product' should be spelled correctly here
+    	        populateCategoryDropdown(categories, categoryId);
+    	    })
+    	    .catch(error => {
+    	        console.error('Error fetching categories:', error);
+    	    });
+    	// Function to populate the category dropdown and set the selected category
+    	function populateCategoryDropdown(categories, selectedCategory) {
+    	    const categorySelect = document.getElementById('categorySelect');
+
+    	    categories.forEach(category => {
+    	        const option = document.createElement('option');
+    	        option.value = category.categoryId; // Assuming categoryId is the ID
+    	        option.textContent = category.categoryName; // Assuming categoryName is the name
+    	        categorySelect.appendChild(option);
+
+    	        // Check if the category matches the product's category and set as selected
+    	        if (category.categoryId === parseInt(selectedCategory)) {
+    	            option.selected = true;
+    	        }
+    	    });
+    	}
+
+    	
+
+    	
       const adminToken = localStorage.getItem("adminToken");
       if(adminToken==null){
        window.location.href = "/admin/login";

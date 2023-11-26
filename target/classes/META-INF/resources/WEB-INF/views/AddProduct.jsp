@@ -67,7 +67,13 @@ button {
     left: 0;
     border-right: 1px solid rgba(0,0,0,.2);
 }
+
+.custom-dropdown {
+   overflow-y: scroll;
+}
+
       
+   
       
       </style>
       
@@ -229,11 +235,39 @@ button {
         <div class="row">
           <div class="col-md-12 mb-3">
             <div class="card">
-              <div style="display: flex; justify-content: center; align-items: center;" class="card-header">
-                <span>ADD PRODUCT</span> 
-              </div>
+             <div style="display: flex; justify-content: space-between; align-items: center;" class="card-header">
+               <span>ADD PRODUCT</span>
+    <div style="display: flex; align-items: center;">
+        <!-- Button to trigger the modal -->
+        <button type="button" class="btn btn-primary" id="openAddCategoryModal">
+            Add New Category
+        </button>
+    </div>
+    </div>
+
               <div class="card-body">
                 <div class="table-responsive1">
+                
+                <!-- Modal -->
+ <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addCategoryModalLabel">Add New Category</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="newCategoryForm">
+                    <div class="mb-3">
+                        <label for="newCategoryName" class="form-label">Category Name</label>
+                        <input type="text" class="form-control" id="newCategoryName" required>
+                    </div>
+                    <button type="button" class="btn btn-primary" id="submitCategoryBtn">Add Category</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div> 
                 
                   <form id="productForm" onsubmit="addProduct(event)" >
           <div class="mb-3">
@@ -258,6 +292,18 @@ button {
               <label for="quantity" class="form-label">Quantity</label>
               <input type="number" class="form-control" id="quantity" placeholder="Enter quantity" required>
           </div>
+          <div class="mb-3">
+               <label for="categorySelect" class="form-label " >Select Category</label>
+            <select class="form-control bg-light custom-dropdown" id="categorySelect"   >
+               <option value="" selected disabled>Select a category</option>
+           </select>
+           
+            
+         </div>
+         
+        
+
+  
   
           <div class="mb-3">
               <label for="productImage" class="form-label">Product Image</label>
@@ -315,9 +361,7 @@ button {
   function addProduct(event) {
  	 event.preventDefault();
  	 
- 	 
 
- 	    
  	    const file = document.getElementById('productImage').files[0];
  	    var productImage;
 
@@ -343,6 +387,7 @@ button {
   
   function callAPI(image)
   {
+	  const categoryId = document.getElementById('categorySelect').value;
  	 const productName = document.getElementById('productName').value;
 	    const description = document.getElementById('description').value;
 	    const price = document.getElementById('price').value;
@@ -353,6 +398,7 @@ button {
 	    formData.append('description', description);
 	    formData.append('price', price);
 	    formData.append('quantityInStock', quantity);
+	    formData.append('category', categoryId);
 
 	    $.ajax({
 	        url: '/admin/products/add',
@@ -428,6 +474,26 @@ button {
     });
 
     $(document).ready(function () {
+    	
+    	  fetch('/all/category')
+          .then(response => response.json())
+          .then(data => {
+              const categorySelect = document.getElementById('categorySelect');
+              data.forEach(category => {
+                  const option = document.createElement('option');
+                  option.value = category.categoryId; // Assuming categoryId is the ID
+                  option.textContent = category.categoryName; // Assuming categoryName is the name
+                  categorySelect.appendChild(option);
+              });
+          })
+          .catch(error => {
+              console.error('Error fetching categories:', error);
+          });
+    	
+    	
+    	
+    	
+    	
       const adminToken = localStorage.getItem("adminToken");
       if(adminToken==null){
        window.location.href = "/admin/login";
@@ -437,8 +503,49 @@ button {
     localStorage.removeItem("adminToken");
     window.location.href = "/admin/login";
     }
+     
+     document.addEventListener('DOMContentLoaded', function () {
+    	    const openModalButton = document.getElementById('openAddCategoryModal');
+    	    const addCategoryModal = new bootstrap.Modal(document.getElementById('addCategoryModal'));
 
-    
+    	    if (openModalButton && addCategoryModal) {
+    	        openModalButton.addEventListener('click', function () {
+    	            const modal = new bootstrap.Modal(document.getElementById('addCategoryModal'));
+    	            modal.show();
+    	        });
+    	    }
+
+    	    const submitCategoryBtn = document.getElementById('submitCategoryBtn');
+    	    if (submitCategoryBtn) {
+    	        submitCategoryBtn.addEventListener('click', function () {
+    	            const categoryName = document.getElementById('newCategoryName').value;
+    	            const data = { categoryName: categoryName }; // Prepare the data object
+
+    	            fetch('/add/category', {
+    	                method: 'POST',
+    	                headers: {
+    	                    'Content-Type': 'application/json',
+    	                },
+    	                body: JSON.stringify(data), // Stringify the data object
+    	            })
+    	            .then(response => {
+                        if (response.ok) {
+                            addCategoryModal.hide();
+                            location.reload();
+                            alert("Category added");
+                        } else {
+                            throw new Error('Failed to add category');
+                        }
+                       
+                    })
+                    .catch(error => {
+                        console.error('Error:', error.message);
+                    });
+    	           
+    	         
+    	        });
+    	    }
+    	});
     </script>
   </body>
 </html>

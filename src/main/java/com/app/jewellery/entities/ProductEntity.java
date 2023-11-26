@@ -35,11 +35,27 @@ public class ProductEntity {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    // Getters and setters
+
+    @Column(name = "category_id")
+    private long category;
     
 	public Long getProductId() {
 		return productId;
 	}
+
+	
+
+	public long getCategory() {
+		return category;
+	}
+
+
+
+	public void setCategory(long category) {
+		this.category = category;
+	}
+
+
 
 	public void setProductId(Long productId) {
 		this.productId = productId;

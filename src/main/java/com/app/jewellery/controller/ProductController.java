@@ -1,6 +1,7 @@
 package com.app.jewellery.controller;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,10 +16,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.app.jewellery.dao.CategoryRepository;
+import com.app.jewellery.entities.CategoryEntity;
 import com.app.jewellery.entities.ProductEntity;
 import com.app.jewellery.services.AdminService;
 
@@ -27,6 +32,9 @@ public class ProductController {
 	
 	@Autowired
 	AdminService adminService;
+	
+	@Autowired
+	CategoryRepository categoryRepository;
 	
 	 @RequestMapping("/admin/add-product")
 		public ModelAndView getAddProduct(HttpSession session,HttpServletRequest request) {
@@ -99,5 +107,32 @@ public class ProductController {
 	        	  
 	        }
 	    }
+	 
+	 
+	 @PostMapping("/add/category")
+	    public ResponseEntity<String> addCategory(@RequestBody CategoryEntity category) {
+		 
+		 try {
+	            CategoryEntity savedCategory = categoryRepository.save(category);
+	            return ResponseEntity.ok("Category added successfully with ID: " + savedCategory.getCategoryId());
+	        } catch (Exception e) {
+	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+	                    .body("Failed to add category: " + e.getMessage());
+	        }
+	       
+	    }
+	 
+	 @GetMapping("/all/category")
+	 public ResponseEntity<List<CategoryEntity>> getAllCategories() {
+	     try {
+	         List<CategoryEntity> categories = categoryRepository.findAll();
+	         return ResponseEntity.ok(categories);
+	     } catch (Exception e) {
+	         // Log the exception or return a custom error message
+	         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+	                 .body(Collections.emptyList()); // Return an empty list or handle differently
+	     }
+	 }
+
 
 }
