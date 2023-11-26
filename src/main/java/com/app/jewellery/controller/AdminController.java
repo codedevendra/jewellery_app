@@ -39,6 +39,9 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.nio.file.Files;
+
+import com.app.jewellery.DTO.AdminLoginDTO;
+import com.app.jewellery.DTO.AdminVerifyOtpDTO;
 import com.app.jewellery.dao.ProductRepository;
 import com.app.jewellery.dao.UserRepository;
 import com.app.jewellery.dao.UserRoleRepository;
@@ -47,6 +50,7 @@ import com.app.jewellery.entities.UserEntity;
 import com.app.jewellery.entities.UserRoleEntity;
 import com.app.jewellery.services.AdminService;
 import com.app.jewellery.util.Authentication;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -68,6 +72,8 @@ public class AdminController {
 	
 	 @Value("${upload-dir}")
 	  private String uploadDir;
+	 @Value("${isTesting}")
+	  private boolean isTesting;
 	
 	@Autowired
 	UserRoleRepository userRoleRepository;
@@ -89,22 +95,11 @@ public class AdminController {
 		}
 	 
 	
-	 
-	
-	 
-
-	 
-	
-	 
 	@RequestMapping("/admin/login")
 	public ModelAndView getAdminLogin() {
 		ModelAndView mv=new ModelAndView("/AdminLogin");
 		return mv;
 	}
-	
-	
-	
-	
 	
 	  @PostMapping("/admin/add-admin")
 	    public ResponseEntity<UserEntity> addAdmin(@RequestBody UserEntity admin) {
@@ -128,26 +123,38 @@ public class AdminController {
 		return mv;
 	}
 	
-	//@RequestMapping("/admin/verify/otp")
-	public ResponseEntity<Map<String,Object>>  verifyAdminOtp(@RequestBody Map<String,Object> data,HttpSession session) {
-		if(session.getAttribute("otp")!=null&&session.getAttribute("otp").equals(data.get("otp"))) {
+	@RequestMapping("/admin/verify/otp")
+	public String verifyAdminOtp(@ModelAttribute("verifyOTP") AdminVerifyOtpDTO data,HttpSession session) {
+		if(isTesting) {
+			try {
+			return verifyAdminOtpDummy(data, session);
+			}
+			catch (IOException e) {
+				Map<String,Object> response=new HashMap<String, Object>();
+				response.put("message", "User Not Found !");
+				return "redirect:/auth-error?errorMessage=Invalid OTP !";
+			}
+		}
+		
+		if(session.getAttribute("otp")!=null&&session.getAttribute("otp").equals(String.valueOf(data.getOtp()))) {
 			String token=authentication.generateToken(String.valueOf(session.getAttribute("user")));
-			Map<String,Object> response=new HashMap<String, Object>();
-			response.put("token", token);
-			return ResponseEntity.ok(response);
+			session.setAttribute("token", token);
+			return "redirect:/admin/home";
 		}else {
-			Map<String,Object> response=new HashMap<String, Object>();
-			response.put("error","Invalid otp!");
-			return ResponseEntity.status(401).body(response);
+			return "redirect:/admin/verifyOtp?message=Invalid otp !";
 		}
 	
 	}
 	
-	//@PostMapping("/admin/sendOTP")
-	@ResponseBody
-	public ResponseEntity<Map<String,Object>> sendOTP(@RequestBody Map<String,Object>  data,HttpSession session){
+	@PostMapping("/admin/sendOTP")
+	public String sendOTP(@ModelAttribute("login") AdminLoginDTO  data,HttpSession session){
+		if(isTesting) {
+			System.out.println("sent dommy otp and redirect");
+			return sendDommyOTP(data, session);
+		}
+		
 		Map<String, Object>response=new HashMap<String, Object>();
-		UserEntity user= userRepository.findByMobile(String.valueOf(data.get("mobile")));
+		UserEntity user= userRepository.findByMobile(String.valueOf(data.getMobile()));
 		 ObjectMapper objectMapper=new ObjectMapper();
 		if(user!=null) {
 			UserRoleEntity userRole= userRoleRepository.findByUserId(user.getUserId());
@@ -192,26 +199,26 @@ public class AdminController {
 					if((Boolean) respData.get("return"))
 					{
 						response.put("message", "otp sent successfully !");
-						return ResponseEntity.ok(response);
+						return "redirect:/admin/verifyOtp";
 					}else {
 						response.put("message", "User Not Found !");
-						return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+						return "redirect:/admin/login?error=User Not Found !";
 					}
 					
 				} catch (IOException e) {
 					response.put("message", "User Not Found !");
-					return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+					return "redirect:/admin/login?error=User Not Found !";
 				}
 				
 		       
 			}else {
 				response.put("message", "User Not Found !");
-				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+				return "redirect:/admin/login?error=User Not Found !";
 			}
 			
 		}else {
 			response.put("message", "User Not Found !");
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+			return "redirect:/admin/login?error=User Not Found !";
 		}
 	}
 	
@@ -259,44 +266,90 @@ public class AdminController {
 		
 		
 		
-		@RequestMapping("/admin/verify/otp")
-		public ResponseEntity<Map<String,Object>>  verifyAdminOtpDummy(@RequestBody Map<String,Object> data,HttpSession session) {
-			if(data.get("otp").equals("1234")) {
+	
+		public String  verifyAdminOtpDummy(AdminVerifyOtpDTO data,HttpSession session) throws JsonProcessingException {
+			if(String.valueOf(data.getOtp()).equals("1234")) {
 				String token=authentication.generateToken(String.valueOf(session.getAttribute("user")));
-				Map<String,Object> response=new HashMap<String, Object>();
-				response.put("token", token);
-				return ResponseEntity.ok(response);
+				session.setAttribute("token", token);
+				return "redirect:/admin/home";
 			}else {
 				Map<String,Object> response=new HashMap<String, Object>();
 				response.put("error","Invalid otp!");
-				return ResponseEntity.status(401).body(response);
+				return "redirect:/admin/verifyOtp?message=Invalid otp !";
 			}
 		
 		}
 		
-	    @PostMapping("/admin/sendOTP")
-		@ResponseBody
-		public ResponseEntity<Map<String, Object>> sendToken(@RequestBody Map<String, Object> data, HttpSession session) {
-		    Map<String, Object> response = new HashMap<>();
-		    UserEntity user = userRepository.findByMobile(String.valueOf(data.get("mobile")));
-
-		    if (user != null) {
-		        UserRoleEntity userRole = userRoleRepository.findByUserId(user.getUserId());
-		        if (userRole != null && userRole.getRoleName().equals("ADMIN")) {
-		            // Generate and set token
-		            String token ="e5GOnctWzR9ZUHphmgslv8AK2IYMduN0BFbXS3Ly4kT1QEfraPumRb2BsFTzYWOwZ1IUJqdKixMp8H3G";
-                    
-		            // Set the token in the response
-		            response.put("authorization", token);
-		            return ResponseEntity.ok(response);
-		        } else {
-		            response.put("message", "User Not Found !");
-		            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
-		        }
-		    } else {
-		        response.put("message", "User Not Found !");
-		        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
-		    }
+//	    @PostMapping("/admin/sendOTP")
+//		@ResponseBody
+		public String sendDommyOTP(AdminLoginDTO data, HttpSession session) {
+			Map<String, Object>response=new HashMap<String, Object>();
+			UserEntity user= userRepository.findByMobile(String.valueOf(data.getMobile()));
+			 ObjectMapper objectMapper=new ObjectMapper();
+			if(user!=null) {
+				UserRoleEntity userRole= userRoleRepository.findByUserId(user.getUserId());
+				if(userRole!=null&&userRole.getRoleName().equals("ADMIN")) {
+//					String F2SUrl = "https://www.fast2sms.com/dev/bulkV2";
+//					HttpClient httpClient = HttpClients.createDefault();
+//					
+//					HttpPost request=new HttpPost(F2SUrl);
+//					
+//					request.addHeader("authorization","e5GOnctWzR9ZUHphmgslv8AK2IYMduN0BFbXS3Ly4kT1QEfraPumRb2BsFTzYWOwZ1IUJqdKixMp8H3G");
+//					Map<String, Object> requestBody = new HashMap<>();
+//					requestBody.put("numbers",user.getMobile());
+//					requestBody.put("route", "q");
+					String otp="1234";
+//					
+//					requestBody.put("message", "Your OTP for Jewellery APP is : "+otp);
+					try {
+						Map<String,Object>userData=new HashMap<String, Object>();
+						userData.put("user", user);
+						userData.put("userRole", userRole);
+						session.setAttribute("otp", otp);
+						session.setAttribute("user", objectMapper.writeValueAsString(userData));
+//						String jsonRequestBody = objectMapper.writeValueAsString(requestBody);
+//						StringEntity stringEntity = new StringEntity(jsonRequestBody);
+//						stringEntity.setContentType("application/json");
+//				        request.setEntity(stringEntity);
+//					HttpResponse resp = httpClient.execute(request);
+			        // Read the response
+//			        BufferedReader reader = new BufferedReader(
+//			                new InputStreamReader(resp.getEntity().getContent())
+//			        );
+//			        StringBuilder result = new StringBuilder();
+//			        String line;
+//			        while ((line = reader.readLine()) != null) {
+//			            result.append(line);
+//			        }
+			       
+			        // Parse JSON into Map<String, Object>
+			        
+//						Map<String,Object> respData= objectMapper.readValue(result.toString(), Map.class);
+//						
+//						if((Boolean) respData.get("return"))
+//						{
+							response.put("message", "otp sent successfully !");
+							return "redirect:/admin/verifyOtp";
+//						}else {
+//							response.put("message", "User Not Found !");
+//							return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+//						}
+						
+					} catch (IOException e) {
+						response.put("message", "User Not Found !");
+						return "redirect:/admin/login?error=User Not Found !";
+					}
+					
+			       
+				}else {
+					response.put("message", "User Not Found !");
+					return "redirect:/admin/login?error=User Not Found !";
+				}
+				
+			}else {
+				response.put("message", "User Not Found !");
+				return "redirect:/admin/login?error=User Not Found !";
+			}
 		}
 	  
 }

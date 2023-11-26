@@ -5,6 +5,8 @@ import java.util.Random;
 
 import org.springframework.stereotype.Service;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 @Service
@@ -38,7 +40,7 @@ public class Authentication {
     }
 	
 	  public String generateToken(String username) {
-		  long EXPIRATION_TIME = 864_000_000;
+		  long EXPIRATION_TIME = 21600000;
 	        Date now = new Date();
 	        Date expirationDate = new Date(now.getTime() + EXPIRATION_TIME);
 
@@ -48,6 +50,21 @@ public class Authentication {
 	                .setExpiration(expirationDate)
 	                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
 	                .compact();
+	    }
+	  
+	  public String getUserFromToken(String token) {
+		  try {
+	        Claims claims = Jwts.parser()
+	                .setSigningKey(SECRET_KEY)
+	                .parseClaimsJws(token)
+	                .getBody();
+
+	        return claims.getSubject();}
+	        catch (ExpiredJwtException ex) {
+	        	ex.printStackTrace();
+	            // Token has expired, handle it accordingly
+	            return null; // Or throw an exception or return a special value
+	        }
 	    }
 	
 }
