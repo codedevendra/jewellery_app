@@ -16,11 +16,15 @@
     
 
     <h1 class="text-center text-primary mt-4" >Verify OTP Admin</h1>
+    
+    <c:if test="${not empty param.errorMessage}">
+    <p style="color: red;">${param.message}</p>
+   </c:if>
 
-   <form method="post" onsubmit="verifyOtp(event)">
+   <form method="post" action="/admin/verify/otp" modelAttribute="verifyOTP">
     <div class="mb-3">
         <label for="exampleFormControlInput1" class="form-label">Enter OTP </label>
-        <input type="number" id="otp" name="mobile" class="form-control"  placeholder="Enter OTP">
+        <input type="number" name="otp" class="form-control"  placeholder="Enter OTP">
       </div>
       <button class="btn btn-primary" type="submit">Submit</button>
    </form>

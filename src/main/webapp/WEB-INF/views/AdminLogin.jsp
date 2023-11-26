@@ -22,7 +22,7 @@
         <p style="color:red">${param.error}</p>
     </c:if>
 
-   <form method="post" onsubmit="sendOtp(event)">
+   <form method="post" action="/admin/sendOTP" modelAttribute="login">
     <div class="mb-3">
         <label for="exampleFormControlInput1" class="form-label">Enter Mobile No.</label>
         <input type="number" id="mobileNumber" name="mobile" class="form-control"  placeholder="Enter Mobile Number">
@@ -51,12 +51,12 @@
                 data: JSON.stringify({mobile:mobile}),
                 success: function (response) {
                     // Handle success
-                    window.location.href="/admin/verifyOtp"
+                    //window.location.href="/admin/verifyOtp"
                     
                 },
                 error: function (xhr, status, error) {
                     // Handle error
-                    window.location.href="/admin/login?error="+xhr.responseJSON.message;
+                    //window.location.href="/admin/login?error="+xhr.responseJSON.message;
                 }
             });
      }
