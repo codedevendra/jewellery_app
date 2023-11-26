@@ -504,14 +504,36 @@ button {
     	
 
     	
-      const adminToken = localStorage.getItem("adminToken");
+     /*  const adminToken = localStorage.getItem("adminToken");
       if(adminToken==null){
        window.location.href = "/admin/login";
-    }});
+    } */
+      });
 
- function logout(){
-    localStorage.removeItem("adminToken");
-    window.location.href = "/admin/login";
+    
+    function logout() {
+        fetch('/admin/logout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                // Add any other necessary headers here
+            },
+            // You can include a body if needed
+            // body: JSON.stringify({ /* Your data here */ })
+        })
+        .then(response => {
+            if (response.ok) {
+                // Success message or redirect to a login page, etc.
+                console.log('Logged out successfully');
+                window.location.href = "/admin/login";
+            } else {
+                // Handle error cases
+                console.error('Failed to logout');
+            }
+        })
+        .catch(error => { 
+            console.error('Error:', error);
+        });
     }
     
     </script>

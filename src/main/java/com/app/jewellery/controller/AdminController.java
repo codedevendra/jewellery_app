@@ -84,7 +84,7 @@ public class AdminController {
 	 
 	 @RequestMapping("/")
 		public ModelAndView getAdminHomeDefault(HttpSession session,HttpServletRequest request) {
-			ModelAndView mv=new ModelAndView("/AdminHome");
+			ModelAndView mv=new ModelAndView("/AdminLogin");
 			return mv;
 		}
 	 
@@ -221,49 +221,7 @@ public class AdminController {
 			return "redirect:/admin/login?error=User Not Found !";
 		}
 	}
-	
-	
-	  
-	  
-	  @PostMapping(value="/admin/add/product",consumes = "multipart/form-data")
-	    public ResponseEntity<Map<String,Object>> addProduct(@RequestPart("file") MultipartFile file,
-	            @RequestPart("product") ProductEntity product) {
-	      
-		  Map<String,Object> response=new HashMap<String, Object>();
-		  
-		  try {
-	            // Save product details
-	        	ProductEntity savedProduct = productRepository.save(product);
-
-	            // Save image
-	            String fileName = file.getOriginalFilename();
-	            Path filePath = Path.of(uploadDir, fileName);
-	            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-
-	            // Update the product entity with the image filename
-	            
-
-	            // Build the image URL
-	            String imageUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
-	                    .path("/static/images/")
-	                    .path(fileName)
-	                    .toUriString();
-	            savedProduct.setImage(imageUrl);
-	            productRepository.save(savedProduct);
-
-	            response.put("Message", "Product Added successfully !" );
-	            return ResponseEntity.ok(response);
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	            response.put("Error", "Something went wrong !" );
-	            return ResponseEntity.status(500).body(response);
-	        }
-	    }
-	  
-	  
-	
-	  
-		
+			
 		
 		
 	
@@ -351,5 +309,31 @@ public class AdminController {
 				return "redirect:/admin/login?error=User Not Found !";
 			}
 		}
-	  
+		
+		/*
+		 * @GetMapping("/logout") public String logout(HttpSession session) { if
+		 * (session != null) { // Retrieve the token attribute from the session
+		 * 
+		 * String token = (String) session.getAttribute("token");
+		 * System.out.println("token"+token); }
+		 * 
+		 * 
+		 * session.removeAttribute("token");
+		 * 
+		 * return "redirect:/admin/home"; // Redirect to a different page after logout }
+		 */
+		 
+		 
+		 @PostMapping("/admin/logout")
+		    public String logout(HttpServletRequest request) {
+		        HttpSession session = request.getSession(false); // Get the session, 'false' means don't create if it doesn't exist
+
+		        if (session != null) {
+		        	session.removeAttribute("token");
+		            session.invalidate(); // Invalidate the session (remove all attributes and end the session)
+		            return "redirect:/admin/login";
+		        }
+
+		        return "redirect:/admin/login";
+		    }
 }

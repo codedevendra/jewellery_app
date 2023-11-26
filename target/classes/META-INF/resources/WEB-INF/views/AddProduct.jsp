@@ -494,10 +494,7 @@ button {
     	
     	
     	
-      const adminToken = localStorage.getItem("adminToken");
-      if(adminToken==null){
-       window.location.href = "/admin/login";
-    }});
+    });
     
      function logout(){
     localStorage.removeItem("adminToken");
