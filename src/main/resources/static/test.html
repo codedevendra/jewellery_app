@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Owl Carousel CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+   
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+   <style>
+        .square-container {
+
+            padding-left: 10%;
+            padding-right: 10%;
+        }
+
+        .square {
+            border-radius: 5%;
+            /* Adjust the width as needed */
+            /* Maintain aspect ratio to create a square */
+            background-color: #ccc;
+            /* Add a background color for visualization */
+            display: flex;
+            justify-content: center;
+        }
+
+        .square .title-cat {
+            color: #FFF;
+            font-family: Plus Jakarta Sans;
+            font-size: 1rem;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+            letter-spacing: 0.03375rem;
+        }
+
+        .square div {
+            color: #FFF;
+            position: absolute;
+            bottom: 10px;
+            font-family: Plus Jakarta Sans;
+            font-size: 1.3125rem;
+            font-style: normal;
+            font-weight: 400;
+        }
+
+        .owl-item {
+            
+            text-align: center;
+            color: white;
+        }
+
+        /* Styles for navigation arrows */
+        .owl-prev, .owl-next {
+            font-size: 24px;
+            color: white;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            
+        }
+
+        .owl-prev {
+            left: 0;
+            
+        }
+
+        .owl-next {
+            right: 0;
+            
+        }
+
+        .left-arr , .right-arr{
+            font-size: 50px;
+            color: white;
+        }
+    </style>
+    <title>Owl Carousel Slider</title>
+</head>
+
+<body>
+
+
+
+<div class="square-container">
+
+
+
+    <div class="owl-carousel">
+        <div class="item">
+            <div class="square">
+                <img src="./Gents Ring.png">
+                <div>Gents Ring</div>
+            </div>
+        </div>
+        <div class="item"><div class="square">
+                <img src="./Gents Ring.png">
+                <div>Gents Ring</div>
+            </div>
+        </div>
+        <div class="item"><div class="square">
+                <img src="./Gents Ring.png">
+                <div>Gents Ring</div>
+            </div>
+        </div>
+        <div class="item"><div class="square">
+                <img src="./Gents Ring.png">
+                <div>Gents Ring</div>
+            </div>
+        </div>
+        <div class="item"><div class="square">
+                <img src="./Gents Ring.png">
+                <div>Gents Ring</div>
+            </div>
+        </div>
+        <div class="item"><div class="square">
+                <img src="./Gents Ring.png">
+                <div>Gents Ring</div>
+            </div>
+        </div>
+        <div class="item"><div class="square">
+                <img src="./Gents Ring.png">
+                <div>Gents Ring</div>
+            </div>
+        </div>
+        <div class="item"><div class="square">
+                <img src="./Gents Ring.png">
+                <div>Gents Ring</div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+    <!-- Owl Carousel JS -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $(".owl-carousel").owlCarousel({
+                items: 4, // Set the number of items to display in one slide
+                loop: true,
+                margin: 10,
+                nav: true,
+                navText: ["<i class='left-arr'><</i>", "<i class='right-arr'>></i>"]
+            });
+        });
+    </script>
+
+</body>
+
+</html>

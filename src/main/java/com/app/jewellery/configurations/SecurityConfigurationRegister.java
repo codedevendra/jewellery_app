@@ -2,6 +2,7 @@ package com.app.jewellery.configurations;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
@@ -13,4 +14,9 @@ public class SecurityConfigurationRegister implements WebMvcConfigurer {
                 .excludePathPatterns("/unauthorized"); // Exclude paths that handle unauthorized access
     }
 
+	 @Override
+	    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+	        registry.addResourceHandler("/static/**")
+	                .addResourceLocations("classpath:/static/");
+	    }
 }

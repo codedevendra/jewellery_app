@@ -21,7 +21,7 @@ public class SecurityConfiguration implements HandlerInterceptor {
 		System.out.println("request URI " + request.getRequestURI());
 		if (request.getRequestURI().equals("/admin/login") || request.getRequestURI().equals("/admin/sendOTP")
 				|| request.getRequestURI().equals("/admin/verifyOtp") || request.getRequestURI().equals("/error")
-				|| request.getRequestURI().equals("/")||request.getRequestURI().equals("/admin/verify/otp")||request.getRequestURI().equals("/user/verifyOtp")||request.getRequestURI().equals("/user/login")||request.getRequestURI().equals("/user/welcomeuserForm")||request.getRequestURI().equals("/user/sendOTP")||request.getRequestURI().equals("/user/verify/otp")||request.getRequestURI().equals("/user/home")) {
+				|| request.getRequestURI().equals("/")||request.getRequestURI().equals("/admin/verify/otp")||request.getRequestURI().equals("/user/verifyOtp")||request.getRequestURI().equals("/user/login")||request.getRequestURI().equals("/user/welcomeuserForm")||request.getRequestURI().equals("/user/sendOTP")||request.getRequestURI().equals("/user/verify/otp")||request.getRequestURI().equals("/user/home")||request.getRequestURI().contains("/static/")) {
 			return true;
 		} else {
 			String userRole = getUserRoleFromSession(request);
