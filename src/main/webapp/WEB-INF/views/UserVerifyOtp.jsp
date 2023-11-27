@@ -23,10 +23,10 @@
   <div class="card shadow-2-strong" style="border-radius: 1rem; width: 400px;">
     <div class="card-body p-5">
       <h3 class="mb-4 text-center">Verify OTP</h3>
-      <form  id="otpFormm">
+      <form   method="post" action="/user/verify/otp" modelAttribute="verifyOTP">
         <div class="form-group">
           <label for="otp">Enter OTP</label>
-          <input type="text" class="form-control" id="otp" placeholder="Enter the OTP received" required>
+          <input type="text" class="form-control" id="otp" name="otp"  placeholder="Enter the OTP received" required>
         </div>
         <button type="submit" class="btn btn-custom btn-block">Verify</button>
         <p class="mt-3 text-center">Didn't receive OTP? <a href="#">Resend OTP</a></p>
@@ -50,7 +50,7 @@
         var otp=$("#otp").val();
 
         $.ajax({
-                url: "/admin/verify/otp",
+                url: "/user/verify/otp",
                 type: "POST",
                 contentType: "application/json",
                 data: JSON.stringify({otp:otp}),

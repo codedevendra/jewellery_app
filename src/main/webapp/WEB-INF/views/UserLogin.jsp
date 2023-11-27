@@ -23,10 +23,10 @@
   <div class="card shadow-2-strong" style="border-radius: 1rem; width: 400px;">
     <div class="card-body p-5 text-center">
       <h1 class="mb-4">Kusum</h1>
-      <form id="otpForm">
+      <form  method="post" action="/user/sendOTP" modelAttribute="login">
          <div class="form-group text-left"> <!-- Set text alignment to left -->
           <label for="mobileNumber">Enter Mobile Number</label>
-          <input type="tel" class="form-control" id="mobileNumber" placeholder="Enter your mobile number" required>
+          <input type="tel" class="form-control" id="mobileNumber" name="mobile" placeholder="Enter your mobile number" required>
         </div>
         <button type="submit" class="btn btn-custom btn-block">Send OTP</button>
       </form>
@@ -44,26 +44,31 @@
 	      sendOtp(event); // Call the sendOtp function when the form is submitted
 	    });
 	  });
-     function sendOtp(event){
-    	 
-        event.preventDefault();
-        var mobile=$("#mobileNumber").val();
-        $.ajax({
-                url: "/user/sendOTP",
-                type: "POST",
-                contentType: "application/json",
-                data: JSON.stringify({mobile:mobile}),
-                success: function (response) {
-                    // Handle success
-                   window.location.href="/user/verifyOtp"
-                    
-                },
-                error: function (xhr, status, error) {
-                    // Handle error
-                    window.location.href="/user/login?error="+xhr.responseJSON.message;
-                }
-            });
-     }
+  
+  function sendOtp(event) {
+	    event.preventDefault();
+	    var mobile = $("#mobileNumber").val();
+
+	    console.log("mobile", mobile);
+	    
+	    $.ajax({
+	        url: "/user/sendOTP",
+	        type: "POST",
+	        contentType: "application/json",
+	        data: JSON.stringify({ mobile: mobile }),
+	        success: function (response) {
+	            // Handle success
+	            console.log("Success:", response);
+	            // window.location.href = "/user/verifyOtp";
+	        },
+	        error: function (xhr, status, error) {
+	            // Handle error
+	            console.error("Error:", xhr, status, error);
+	            window.location.href = "/user/login?error=" + xhr.responseJSON.message;
+	        }
+	    });
+	}
+
     </script>
 </body>
 </html>

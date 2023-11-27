@@ -104,6 +104,7 @@ public class UserController {
 		if(session.getAttribute("otp")!=null&&session.getAttribute("otp").equals(String.valueOf(data.getOtp()))) {
 			String token=authentication.generateToken(String.valueOf(session.getAttribute("user")));
 			session.setAttribute("token", token);
+			System.out.print("MOBILE called");
 			return "redirect:/user/home";
 		}else {
 			return "redirect:/user/verifyOtp?message=Invalid otp !";
@@ -117,6 +118,17 @@ public class UserController {
 		if(String.valueOf(data.getOtp()).equals("1234")) {
 			String token=authentication.generateToken(String.valueOf(session.getAttribute("user")));
 			session.setAttribute("token", token);
+			String mobile=(String) session.getAttribute("mobile");
+			
+			/*
+			 * UserEntity user= userRepository.findByMobile(mobile);
+			 * 
+			 * if(user!=null) { return "redirect:/user/welcomeuserForm"; }
+			 */
+			
+			System.out.println("mobile45654"+mobile);
+			
+			
 			return "redirect:/user/home";
 		}else {
 			Map<String,Object> response=new HashMap<String, Object>();
@@ -130,6 +142,7 @@ public class UserController {
 	public String sendOTP(@ModelAttribute("login") UserLoginDTO  data,HttpSession session){
 		if(isTesting) {
 			System.out.println("sent dommy otp and redirect");
+			System.out.print("mobile number"+data.getMobile());
 			return sendDommyOTP(data, session);
 		}
 		
@@ -205,7 +218,7 @@ public class UserController {
 
 	public String sendDommyOTP(UserLoginDTO data, HttpSession session) {
 		Map<String, Object>response=new HashMap<String, Object>();
-		System.out.print("mobile"+data.getMobile());
+		System.out.print("mobile123"+String.valueOf(data.getMobile()));
 		UserEntity user= userRepository.findByMobile(String.valueOf(data.getMobile()));
 		 ObjectMapper objectMapper=new ObjectMapper();
 		if(user!=null) {
@@ -217,6 +230,7 @@ public class UserController {
 					userData.put("user", user);
 					userData.put("userRole", userRole);
 					session.setAttribute("otp", otp);
+					session.setAttribute("mobile", data.getMobile());
 					session.setAttribute("user", objectMapper.writeValueAsString(userData));
 
 						response.put("message", "otp sent successfully !");
