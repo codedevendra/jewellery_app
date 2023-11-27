@@ -21,7 +21,7 @@
     <p style="color: red;">${param.message}</p>
    </c:if>
 
-   <form method="post" action="/admin/verify/otp" modelAttribute="verifyOTP">
+   <form method="post" action="/user/verify/otp" modelAttribute="verifyOTP">
     <div class="mb-3">
         <label for="exampleFormControlInput1" class="form-label">Enter OTP </label>
         <input type="number" name="otp" class="form-control"  placeholder="Enter OTP">
@@ -45,7 +45,7 @@
         var otp=$("#otp").val();
 
         $.ajax({
-                url: "/admin/verify/otp",
+                url: "/user/verify/otp",
                 type: "POST",
                 contentType: "application/json",
                 data: JSON.stringify({otp:otp}),

@@ -82,11 +82,7 @@ public class AdminController {
 	Authentication authentication;
 	
 	 
-	 @RequestMapping("/")
-		public ModelAndView getAdminHomeDefault(HttpSession session,HttpServletRequest request) {
-			ModelAndView mv=new ModelAndView("/AdminLogin");
-			return mv;
-		}
+	
 	 
 	 @RequestMapping("/admin/home")
 		public ModelAndView getAdminHome(HttpSession session,HttpServletRequest request) {
