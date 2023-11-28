@@ -11,4 +11,6 @@ import com.app.jewellery.entities.ProductEntity;
 public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
 	List<ProductEntity> findAll();
 
+	List<ProductEntity> findByCategory(long categoryId);
+
 }

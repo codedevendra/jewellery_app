@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,8 +27,10 @@ import com.app.jewellery.DTO.AdminLoginDTO;
 import com.app.jewellery.DTO.AdminVerifyOtpDTO;
 import com.app.jewellery.DTO.UserLoginDTO;
 import com.app.jewellery.DTO.UserVerifyDTO;
+import com.app.jewellery.dao.CategoryRepository;
 import com.app.jewellery.dao.UserRepository;
 import com.app.jewellery.dao.UserRoleRepository;
+import com.app.jewellery.entities.CategoryEntity;
 import com.app.jewellery.entities.UserEntity;
 import com.app.jewellery.entities.UserRoleEntity;
 import com.app.jewellery.util.Authentication;
@@ -44,7 +47,8 @@ public class UserController {
 	  private String uploadDir;
 	 @Value("${isTesting}")
 	  private boolean isTesting;
-	 
+	 @Autowired
+		CategoryRepository categoryRepository;
 		
 	  @Autowired
 	  Authentication authentication;
@@ -70,6 +74,9 @@ public class UserController {
 	@RequestMapping("/user/home")
 	public ModelAndView getUserHomePage() {
 		ModelAndView mv=new ModelAndView("/UserHome");
+		 List<CategoryEntity> categories = categoryRepository.findAll();
+		 mv.addObject("category",categories);
+		 
 		return mv;
 	}
 	

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,22 +19,25 @@
         rel="stylesheet">
     <style>
         .header-div {
-            background-image: url(./header_backgroud-1.svg);
             width: 100%;
-            height: 100vh;
-            padding-left: 10%;
-            padding-right: 10%;
-            background-size: cover;
+            position: relative;
+            top: -5rem;
+
         }
 
         .head-logo img {
             padding-top: 10px;
             width: 170px;
+
         }
 
         .header-links {
             display: flex;
             justify-content: space-between;
+            position: relative;
+            top: 5rem;
+            padding-left: 10%;
+            padding-right: 10%;
         }
 
         .header-item {
@@ -175,14 +178,17 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            position: relative;
+            top: -5rem;
         }
 
         .square-container {
             display: flex;
             justify-content: space-between;
-            margin-top: 20px;
             padding-left: 10%;
             padding-right: 10%;
+            position: relative;
+            top: -3rem;
         }
 
         /* .square {
@@ -209,12 +215,14 @@
         .rectangle-container {
             display: flex;
             justify-content: space-between;
-            margin: 20px 0;
             padding-left: 12%;
             padding-right: 12%;
+            position: relative;
+            top: -6rem;
         }
 
         .rectangle {
+            z-index: 2;
             width: 24.5%;
             /* Adjust the width as needed */
             height: 120px;
@@ -222,9 +230,8 @@
             /* background-color: #ccc; Add a background color for visualization */
             position: relative;
             /* Position relative for absolute positioning of the content */
-            top: 50%;
             /* Adjust the position as needed */
-            transform: translateY(+66.6%);
+            transform: translateY(+50%);
             background: linear-gradient(101deg, #D39B29 4.72%, #9D6D09 97.4%);
             border-radius: 20px;
         }
@@ -315,7 +322,7 @@
 
         .gift-card {
             width: 100%;
-            margin-top: 30px;
+            top: -15rem;
             position: relative;
             bottom: 150px;
             border-radius: 15px;
@@ -398,14 +405,260 @@
             font-size: 50px;
             color: white;
         }
+
+        .mobil-nav {
+            display: none;
+        }
+
+        .product-container-div {
+            width: 100%;
+            background-color: #F6F3EE;
+            padding-top: 150px;
+            padding-bottom: 200px;
+            position: relative;
+            top: -6rem;
+        }
+
+
+        #sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 5;
+            top: 0;
+            left: 0;
+            background-color: #111;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+
+        #sidebar a {
+            padding: 15px 15px 15px 32px;
+            text-decoration: none;
+            font-size: 20px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
+
+        #sidebar a:hover {
+            color: #f1f1f1;
+        }
+
+        #sidebar .close-btn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+
+        #main-content {
+            padding: 16px;
+        }
+
+        .open-btn {
+            width: 20%;
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 5;
+            color: wheat;
+        }
+
+
+        .copyright-div {
+            color: #FFF;
+            font-family: Plus Jakarta Sans;
+            font-size: 1.0625rem;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+            background-color: #000;
+            display: flex;
+            height: 50px;
+            justify-content: center;
+            align-items: center;
+            padding-left: 12%;
+            padding-right: 12%;
+        }
+
+        .gift-mobile-container {
+            display: none;
+        }
+
+        .mobile-menu-div {
+            display: none;
+            width: 100%;
+            height: 80px;
+            background-color: #fff;
+            box-shadow: 0px -5px 10px rgba(0, 0, 0, 0.1);
+            /* This creates a top shadow */
+        }
+
+        @media (max-width: 769px) {
+            .header-div {
+                position: relative;
+                top: 0rem;
+            }
+
+            .link-container {
+                display: none;
+            }
+
+            .header-icon-container {
+                display: none;
+            }
+
+            .rectangle {
+                width: 49%;
+                margin-top: 10px;
+            }
+
+            .rectangle-container {
+                flex-wrap: wrap;
+            }
+
+            .product-container {
+                flex-wrap: wrap;
+            }
+
+            .product {
+                width: 49%;
+                margin-top: 17px;
+            }
+
+            .gift-card {
+
+                top: -6rem;
+
+            }
+
+            .head-logo {
+                display: none;
+                width: 50%;
+            }
+
+            .mobil-nav {
+                background-color: black;
+                height: 5rem;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                position: sticky;
+                top: 0;
+                z-index: 4;
+            }
+
+            .mobil-nav img {
+                width: 50%;
+            }
+
+            .gold-price-div {
+                position: relative;
+                top: 0rem;
+            }
+
+            .square-container {
+                position: relative;
+                top: 1rem;
+            }
+
+            .rectangle-container {
+                position: relative;
+                top: 0rem;
+            }
+
+            .product-container-div {
+                position: relative;
+                top: 0rem;
+            }
+
+            .mobil-nav-logo {
+                display: flex;
+                justify-content: center;
+                width: 60%;
+            }
+
+            .mob-icons {
+                width: 20%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .mob-icons img {
+                margin: 8px;
+            }
+
+            .gift-card-container {
+                display: none;
+            }
+
+            .copyright-div {
+                display: none;
+            }
+
+            .gift-mobile-container {
+                display: block;
+                width: 100%;
+            }
+
+            .gift-mobile-container img {
+                width: 100%;
+                margin-bottom: 150px;
+            }
+
+            .mobile-menu-div{
+                display: flex;
+                justify-content: space-evenly;
+                align-items: center;
+                position: sticky;
+                bottom: 0;
+                z-index: 7;
+            }
+
+            .mobile-menu-div span{
+                display: block;
+            }
+            .mobile-menu-div div{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+            }
+        }
     </style>
 </head>
 
 <body>
+
+
+    <div class="mobil-nav">
+        <div class="open-btn" onclick="openNav()">☰</div>
+        <div class="mobil-nav-logo"><img src="/static/logo.svg"></div>
+        <div class="mob-icons"><img src="/static/search(1) 1.svg">
+            <img src="/static/user 1.svg">
+            <img src="/static/shopping-cart(1) 1.svg">
+        </div>
+    </div>
+    <div id="sidebar">
+        <a href="javascript:void(0)" class="close-btn" onclick="closeNav()">×</a>
+        <a href="#">Shop</a>
+        <a href="#">Digi Gold</a>
+        <a href="#">Gold Schemes</a>
+        <a href="#">E-Gift Card</a>
+        <a href="#">Book My Gold</a>
+        <a href="#">My Transactions</a>
+    </div>
+
     <div class="header-div">
         <div class="header-links">
             <div class="head-logo">
-                <img src="./logo.svg">
+                <img src="/static/logo.svg">
             </div>
             <div class="link-container">
                 <a class="header-item">Shop</a>
@@ -416,12 +669,12 @@
                 <a class="header-item">My Transactions</a>
             </div>
             <div class="header-icon-container">
-                <img src="../../../resources/static/search(1) 1.svg">
-                <img src="../../../resources/static/user 1.svg">
-                <img src="../../../resources/static/shopping-cart(1) 1.svg">
+                <img src="/static/search(1) 1.svg">
+                <img src="/static/user 1.svg">
+                <img src="/static/shopping-cart(1) 1.svg">
             </div>
         </div>
-
+        <img src="/static/header_backgroud-1.svg" width="100%">
 
     </div>
 
@@ -438,41 +691,51 @@
     <div class="square-container">
 
         <div class="owl-carousel">
+        
+         <c:forEach items="${category}" var="cat">
             <div class="item">
+                <div class="square">
+                    <img src="${cat.image}">
+                    <div>${cat.categoryName}</div>
+                </div>
+            </div>
+            
+        </c:forEach>
+        
+           <!--  <div class="item">
 
                 <div class="square">
-                    <img src="../../resources/static/Gents Ring.png">
+                    <img src="/static/Gents Ring.png">
                     <div>Gents Ring</div>
                 </div>
             </div>
             <div class="item">
-                <div class="square" >
-                    <img src="../../../resources/static/Earings.png">
-                    <div >Earings</div>
+                <div class="square">
+                    <img src="/static/Earings.png">
+                    <div>Earings</div>
                 </div>
             </div>
             <div class="item">
                 <div class="square">
-                    <img src="../../../resources/static/Bracelets.png">
+                    <img src="/static/Bracelets.png">
                     <div>Bracelets</div>
                 </div>
             </div>
             <div class="item">
                 <div class="square">
-                    <img src="../resources/static/Pendants.png">
+                    <img src="/static/Pendants.png">
                     <div>Pendants</div>
                 </div>
             </div>
             <div class="item">
                 <div class="square">
-                   
-                    <img src="../resources/static/chain.png" alt="Chain Image">
-                    
+                    <img src="/static/Chain.png">
                     <div>Chain</div>
                 </div>
             </div>
-            
-        </div>
+
+        </div> -->
+         </div>
 
     </div>
 
@@ -480,29 +743,29 @@
         <div class="rectangle">
             <div class="content">
                 <div class="head-cat">Digi <br> Gold</div>
-                <div><img src="../resources/static/gold-bars 1.svg"></div>
+                <div><img src="/static/gold-bars 1.svg"></div>
             </div>
         </div>
         <div class="rectangle">
             <div class="content">
                 <div class="head-cat">Gold <br> Schemes</div>
-                <img src="../resources/static/saving 1.svg">
+                <img src="/static/saving 1.svg">
             </div>
         </div>
         <div class="rectangle">
             <div class="content">
                 <div class="head-cat">E-Gift <br> Card</div>
-                <img src="../resources/static/gift-card 1.svg">
+                <img src="/static/gift-card 1.svg">
             </div>
         </div>
         <div class="rectangle">
             <div class="content">
                 <div class="head-cat">Book <br>My Gold</div>
-                <img src="../resources/static/coin 1.svg" alt="">
+                <img src="/static/coin 1.svg" alt="">
             </div>
         </div>
     </div>
-    <div style=" width: 100%;background-color: #F6F3EE;padding-top: 150px; padding-bottom: 200px;">
+    <div class="product-container-div">
         <p style="color: #D39B29;
         font-family: Plus Jakarta Sans;
         font-size: 1.0625rem;
@@ -519,7 +782,7 @@
         line-height: 2.5rem; /* 114.286% */;text-align: center;">Our Jewelry Selection</p>
         <div class="d-flex product-container">
             <div class="product">
-                <img src="../resource/static/product-14-1 1.svg" width="100%">
+                <img src="/static/product-14-1 1.svg" width="100%">
                 <p class="product-model">GR008</p>
                 <p class="product-purity">Metal Purity: 22KT</p>
                 <p class="product-purity">Gross Wt.: 3.460</p>
@@ -527,7 +790,7 @@
 
             </div>
             <div class="product">
-                <img src="../resource/static/product-14-1 1.svg" width="100%">
+                <img src="/static/product-14-1 1.svg" width="100%">
                 <p class="product-model">GR008</p>
                 <p class="product-purity">Metal Purity: 22KT</p>
                 <p class="product-purity">Gross Wt.: 3.460</p>
@@ -535,7 +798,7 @@
 
             </div>
             <div class="product">
-                <img src="../resource/static/product-14-1 1.svg" width="100%">
+                <img src="/static/product-14-1 1.svg" width="100%">
                 <p class="product-model">GR008</p>
                 <p class="product-purity">Metal Purity: 22KT</p>
                 <p class="product-purity">Gross Wt.: 3.460</p>
@@ -543,7 +806,7 @@
 
             </div>
             <div class="product">
-                <img src="../resource/static/product-14-1 1.svg" width="100%">
+                <img src="/static/product-14-1 1.svg" width="100%">
                 <p class="product-model">GR008</p>
                 <p class="product-purity">Metal Purity: 22KT</p>
                 <p class="product-purity">Gross Wt.: 3.460</p>
@@ -556,7 +819,7 @@
 
         <div class="d-flex product-container">
             <div class="product">
-                <img src="../resource/static/product-14-1 1.svg" width="100%">
+                <img src="/static/product-14-1 1.svg" width="100%">
                 <p class="product-model">GR008</p>
                 <p class="product-purity">Metal Purity: 22KT</p>
                 <p class="product-purity">Gross Wt.: 3.460</p>
@@ -564,7 +827,7 @@
 
             </div>
             <div class="product">
-                <img src="../resource/static/product-14-1 1.svg" width="100%">
+                <img src="/static/product-14-1 1.svg" width="100%">
                 <p class="product-model">GR008</p>
                 <p class="product-purity">Metal Purity: 22KT</p>
                 <p class="product-purity">Gross Wt.: 3.460</p>
@@ -572,7 +835,7 @@
 
             </div>
             <div class="product">
-                <img src="../resource/static/product-14-1 1.svg" width="100%">
+                <img src="/static/product-14-1 1.svg" width="100%">
                 <p class="product-model">GR008</p>
                 <p class="product-purity">Metal Purity: 22KT</p>
                 <p class="product-purity">Gross Wt.: 3.460</p>
@@ -580,7 +843,7 @@
 
             </div>
             <div class="product">
-                <img src="../resource/static/product-14-1 1.svg" width="100%">
+                <img src="/static/product-14-1 1.svg" width="100%">
                 <p class="product-model">GR008</p>
                 <p class="product-purity">Metal Purity: 22KT</p>
                 <p class="product-purity">Gross Wt.: 3.460</p>
@@ -593,24 +856,29 @@
     </div>
     <div class="gift-card-container">
         <div class="gift-card">
-            <img src="../resource/static/gift-card-image.svg" width="100%">
+            <img src="/static/gift-card-image.svg" width="100%">
 
         </div>
     </div>
 
-    <div
-        style="color: #FFF;
-    font-family: Plus Jakarta Sans;
-    font-size: 1.0625rem;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;background-color: #000;display: flex; height: 50px;justify-content: center;align-items: center;padding-left: 12%; padding-right: 12%;">
+    <div class="copyright-div">
         <div style="width: 50%;">Copyright © 2023 Kusum Jewelery. All Rights Reserved.</div>
         <div style="width: 50%;text-align: right;">Privacy Policy | Terms Of Services</div>
     </div>
 
+    <div class="gift-mobile-container">
+        <img src="/static/gift-mobile-image.svg">
+    </div>
 
-    
+    <div class="mobile-menu-div">
+       <div><img src="/static/home.svg"><span>HOME</span></div>
+       <div><img src="/static/wallet.svg"><span>MY WALLET</span></div>
+       <div><img src="/static/transaction.svg"><span>MY TRANSACTCIONS</span></div>
+       <div><img src="/static/phone.svg"><span>CONTACT</span></div>
+    </div>
+
+
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
@@ -626,14 +894,44 @@
 
     <script>
         $(document).ready(function () {
+        	
             $(".owl-carousel").owlCarousel({
                 items: 4, // Set the number of items to display in one slide
                 loop: true,
                 margin: 10,
                 nav: true,
-                navText: ["<span class='left-arr'><</span>", "<span class='right-arr'>></span>"]
+                navText: ["<span class='left-arr'><</span>", "<span class='right-arr'>></span>"],
+                responsive: {
+                    0: {
+                        items: 2, // Number of items to be displayed for screen width less than 768px
+                    },
+                    769: {
+                        items: 2.5, // Number of items to be displayed for screen width 769px and above
+                    },
+                    1023: {
+                        items: 4, // Number of items to be displayed for screen width 769px and above
+                    }
+                }
             });
+            $('.owl-nav').removeClass('disabled');
+
         });
+        
+        
+
+
+    </script>
+    <script>
+        function openNav() {
+            $("#sidebar").css("width", "250px");
+
+            $(".open-btn").css("display", "none");
+        }
+
+        function closeNav() {
+            $("#sidebar").css("width", "0");
+            $(".open-btn").css("display", "block");
+        }
     </script>
 </body>
 

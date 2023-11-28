@@ -262,6 +262,11 @@ button {
                         <label for="newCategoryName" class="form-label">Category Name</label>
                         <input type="text" class="form-control" id="newCategoryName" required>
                     </div>
+                     <div class="mb-3">
+                    <label for="categoryImage" class="form-label">Image</label>
+                  <input type="file" class="form-control" name="image" id="categoryImage" accept="image/*">
+               
+                </div>
                     <button type="button" class="btn btn-primary" id="submitCategoryBtn">Add Category</button>
                 </form>
             </div>
@@ -515,34 +520,64 @@ button {
     	    const submitCategoryBtn = document.getElementById('submitCategoryBtn');
     	    if (submitCategoryBtn) {
     	        submitCategoryBtn.addEventListener('click', function () {
-    	            const categoryName = document.getElementById('newCategoryName').value;
-    	            const data = { categoryName: categoryName }; // Prepare the data object
-
-    	            fetch('/add/category', {
-    	                method: 'POST',
-    	                headers: {
-    	                    'Content-Type': 'application/json',
-    	                },
-    	                body: JSON.stringify(data), // Stringify the data object
-    	            })
-    	            .then(response => {
-                        if (response.ok) {
-                            addCategoryModal.hide();
-                            location.reload();
-                            alert("Category added");
-                        } else {
-                            throw new Error('Failed to add category');
-                        }
-                       
-                    })
-                    .catch(error => {
-                        console.error('Error:', error.message);
-                    });
     	           
+    	        	 const file = document.getElementById('categoryImage').files[0];
+    	       	    var categoryImage;
+
+    	               var reader = new FileReader();
+
+    	               reader.onload = function(event) {
+    	            	   categoryImage = event.target.result; // Data URI with base64 encoding
+    	                   console.log("categoryImage  ",categoryImage);
+
+    	                   AddCategory(categoryImage,addCategoryModal);
+
+    	                   // Append the image element to a container in the HTML
+    	                   
+    	               };
+
+    	               reader.readAsDataURL(file);
     	         
     	        });
     	    }
     	});
+     
+     function AddCategory(image,addCategoryModal)
+     {
+    	 
+    	 const categoryName = document.getElementById('newCategoryName').value;
+         
+    	 
+    	 const formData = new FormData();
+ 	    formData.append('image', image); // Use 'image' instead of 'file'
+ 	    formData.append('categoryName', categoryName);
+ 	    
+ 	    
+ 	   $.ajax({
+	        url: '/add/category',
+	        type: 'POST',
+	        data: formData,
+	        contentType: false,
+	        processData: false,
+	        success: function(response) {
+	            console.log('API Response:', response);
+	            addCategoryModal.hide();
+                location.reload();
+	            alert(response); 
+	            //window.location.href="/admin/home";
+	        },
+	        error: function(xhr, status, error) {
+	            console.log('Error:', error);
+	            if(xhr.status == 404) {
+	                alert('404 - Endpoint not found');
+	            } else {
+	                alert('Error adding category: ' + xhr.responseText);
+	            }
+	        }
+	    });
+ 	  
+     }
+     
     </script>
   </body>
 </html>

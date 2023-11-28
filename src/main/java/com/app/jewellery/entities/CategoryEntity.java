@@ -20,6 +20,7 @@ public class CategoryEntity {
 	 @Column(name = "category_id")
     private Long categoryId;
 
+	 @Column(name = "category_name")
     private String categoryName;
     
     @Column(name = "image")

@@ -26,12 +26,15 @@ import com.app.jewellery.dao.CategoryRepository;
 import com.app.jewellery.entities.CategoryEntity;
 import com.app.jewellery.entities.ProductEntity;
 import com.app.jewellery.services.AdminService;
+import com.app.jewellery.services.ProductService;
 
 @Controller
 public class ProductController {
 	
 	@Autowired
 	AdminService adminService;
+	@Autowired
+	ProductService productService;
 	
 	@Autowired
 	CategoryRepository categoryRepository;
@@ -110,7 +113,7 @@ public class ProductController {
 	 
 	 
 	 @PostMapping("/add/category")
-	    public ResponseEntity<String> addCategory(@RequestBody CategoryEntity category) {
+	    public ResponseEntity<String> addCategory(@ModelAttribute CategoryEntity category) {
 		 
 		 try {
 	            CategoryEntity savedCategory = categoryRepository.save(category);
@@ -134,5 +137,14 @@ public class ProductController {
 	     }
 	 }
 
+	 @GetMapping("/byCategory/{categoryId}")
+	    public ResponseEntity<List<ProductEntity>> getProductsByCategoryId(@PathVariable long categoryId) {
+		 try {
+	            List<ProductEntity> products = productService.getDataByCategory(categoryId);
+	            return ResponseEntity.ok(products);
+	        }  catch (Exception e) {
+	            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+	        }
+	    }
 
 }
