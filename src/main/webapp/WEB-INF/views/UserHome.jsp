@@ -516,6 +516,7 @@
             .rectangle {
                 width: 49%;
                 margin-top: 10px;
+                 height: 80px;
             }
 
             .rectangle-container {
@@ -629,7 +630,32 @@
                 justify-content: center;
                 align-items: center;
                 flex-direction: column;
+                font-size:0.7rem;
             }
+            
+             .content{
+                height: 70px;
+                font-size: 0.8rem;
+            }
+            .head-cat{
+                padding-right: 0px;
+                margin-right: 5px;
+            }
+            .content img{
+                width: 50px;
+            }
+            
+            .product-model{
+             font-size: 0.8rem;
+            }
+			.product-purity{
+			font-size: 0.7rem;
+			}
+			.product-price{
+			font-size: 0.9rem;
+			}
+			.square div{
+			font-size: 0.8rem;
         }
     </style>
 </head>
@@ -638,7 +664,7 @@
 
 
     <div class="mobil-nav">
-        <div class="open-btn" onclick="openNav()">☰</div>
+        <div class="open-btn" onclick="openNav()">&#x2630;</div>
         <div class="mobil-nav-logo"><img src="/static/logo.svg"></div>
         <div class="mob-icons"><img src="/static/search(1) 1.svg">
             <img src="/static/user 1.svg">
@@ -646,7 +672,7 @@
         </div>
     </div>
     <div id="sidebar">
-        <a href="javascript:void(0)" class="close-btn" onclick="closeNav()">×</a>
+        <a href="javascript:void(0)" class="close-btn" onclick="closeNav()">&#9932;</a>
         <a href="#">Shop</a>
         <a href="#">Digi Gold</a>
         <a href="#">Gold Schemes</a>
@@ -687,7 +713,7 @@
         font-size: 1.0625rem;
         font-style: normal;
         font-weight: 700;
-        line-height: normal;">Gold 22KT 916 ₹ 5820/gm</p>
+        line-height: normal;">Gold 22KT 916 &#8377; 5820/gm</p>
     </div>
 
 
@@ -789,7 +815,7 @@
                 <p class="product-model">GR008</p>
                 <p class="product-purity">Metal Purity: 22KT</p>
                 <p class="product-purity">Gross Wt.: 3.460</p>
-                <p class="product-price">Price: ₹ 18.900</p>
+                <p class="product-price">Price: &#8377; 18.900</p>
 
             </div>
             <div class="product">
@@ -797,7 +823,7 @@
                 <p class="product-model">GR008</p>
                 <p class="product-purity">Metal Purity: 22KT</p>
                 <p class="product-purity">Gross Wt.: 3.460</p>
-                <p class="product-price">Price: ₹ 18.900</p>
+                <p class="product-price">Price: &#8377; 18.900</p>
 
             </div>
             <div class="product">
@@ -805,7 +831,7 @@
                 <p class="product-model">GR008</p>
                 <p class="product-purity">Metal Purity: 22KT</p>
                 <p class="product-purity">Gross Wt.: 3.460</p>
-                <p class="product-price">Price: ₹ 18.900</p>
+                <p class="product-price">Price: &#8377; 18.900</p>
 
             </div>
             <div class="product">
@@ -813,7 +839,7 @@
                 <p class="product-model">GR008</p>
                 <p class="product-purity">Metal Purity: 22KT</p>
                 <p class="product-purity">Gross Wt.: 3.460</p>
-                <p class="product-price">Price: ₹ 18.900</p>
+                <p class="product-price">Price: &#8377; 18.900</p>
 
             </div>
 
@@ -826,7 +852,7 @@
                 <p class="product-model">GR008</p>
                 <p class="product-purity">Metal Purity: 22KT</p>
                 <p class="product-purity">Gross Wt.: 3.460</p>
-                <p class="product-price">Price: ₹ 18.900</p>
+                <p class="product-price">Price: &#8377; 18.900</p>
 
             </div>
             <div class="product">
@@ -834,7 +860,7 @@
                 <p class="product-model">GR008</p>
                 <p class="product-purity">Metal Purity: 22KT</p>
                 <p class="product-purity">Gross Wt.: 3.460</p>
-                <p class="product-price">Price: ₹ 18.900</p>
+                <p class="product-price">Price: &#8377; 18.900</p>
 
             </div>
             <div class="product">
@@ -842,7 +868,7 @@
                 <p class="product-model">GR008</p>
                 <p class="product-purity">Metal Purity: 22KT</p>
                 <p class="product-purity">Gross Wt.: 3.460</p>
-                <p class="product-price">Price: ₹ 18.900</p>
+                <p class="product-price">Price: &#8377; 18.900</p>
 
             </div>
             <div class="product">
@@ -850,7 +876,7 @@
                 <p class="product-model">GR008</p>
                 <p class="product-purity">Metal Purity: 22KT</p>
                 <p class="product-purity">Gross Wt.: 3.460</p>
-                <p class="product-price">Price: ₹ 18.900</p>
+                <p class="product-price">Price: &#8377; 18.900</p>
 
             </div>
 
