@@ -261,5 +261,10 @@ public class UserController {
 		}
 	}
 	
+	@RequestMapping("/user/userDetails")
+	public ModelAndView getUserDetails() {
+		ModelAndView mv=new ModelAndView("/UserDetails");
+		return mv;
+	}
 	
 }

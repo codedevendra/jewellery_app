@@ -670,8 +670,11 @@
             </div>
             <div class="header-icon-container">
                 <img src="/static/search(1) 1.svg">
-                <img src="/static/user 1.svg">
-                <img src="/static/shopping-cart(1) 1.svg">
+                
+                 <a href="/user/userDetails"> 
+                       <img src="/static/user 1.svg">
+				</a>
+				 <img src="/static/shopping-cart(1) 1.svg">
             </div>
         </div>
         <img src="/static/header_backgroud-1.svg" width="100%">
